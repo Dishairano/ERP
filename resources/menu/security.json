@@ -1,0 +1,51 @@
+{
+  "menu": [
+    {
+      "menuHeader": "Security & Compliance"
+    },
+    {
+      "name": "Audit Trail",
+      "icon": "menu-icon tf-icons ri-history-line",
+      "slug": "audit-trail",
+      "submenu": [
+        {
+          "url": "/audit-trail",
+          "name": "Overview",
+          "slug": "audit-trail.index"
+        },
+        {
+          "url": "/audit-trail/settings",
+          "name": "Settings",
+          "slug": "audit-trail.settings"
+        },
+        {
+          "url": "/audit-trail/notifications",
+          "name": "Notifications",
+          "slug": "audit-trail.notifications"
+        }
+      ]
+    },
+    {
+      "name": "Security",
+      "icon": "menu-icon tf-icons ri-shield-line",
+      "slug": "security",
+      "submenu": [
+        {
+          "url": "/security",
+          "name": "Dashboard",
+          "slug": "security.dashboard"
+        },
+        {
+          "url": "/security/settings",
+          "name": "Settings",
+          "slug": "security.settings"
+        },
+        {
+          "url": "/security/2fa/enable",
+          "name": "Two-Factor Auth",
+          "slug": "security.2fa.enable"
+        }
+      ]
+    }
+  ]
+}

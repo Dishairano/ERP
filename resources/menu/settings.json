@@ -1,0 +1,13 @@
+{
+  "menu": [
+    {
+      "menuHeader": "Settings Functions"
+    },
+    {
+      "name": "Settings",
+      "icon": "menu-icon tf-icons ri-settings-line",
+      "url": "/settings",
+      "slug": "settings"
+    }
+  ]
+}

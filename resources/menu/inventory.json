@@ -1,0 +1,88 @@
+{
+  "menu": [
+    {
+      "menuHeader": "Inventory Management"
+    },
+    {
+      "name": "Inventory",
+      "icon": "menu-icon tf-icons ri-store-2-line",
+      "slug": "inventory",
+      "submenu": [
+        {
+          "url": "/inventory/dashboard",
+          "name": "Dashboard",
+          "slug": "inventory.dashboard"
+        },
+        {
+          "url": "/inventory/items",
+          "name": "Items & Products",
+          "slug": "inventory.items"
+        },
+        {
+          "url": "/inventory/stock-levels",
+          "name": "Stock Levels",
+          "slug": "inventory.stock-levels"
+        },
+        {
+          "url": "/inventory/movements",
+          "name": "Stock Movements",
+          "slug": "inventory.movements"
+        },
+        {
+          "url": "/inventory/adjustments",
+          "name": "Adjustments",
+          "slug": "inventory.adjustments"
+        }
+      ]
+    },
+    {
+      "name": "Warehousing",
+      "icon": "menu-icon tf-icons ri-building-2-line",
+      "slug": "warehousing",
+      "submenu": [
+        {
+          "url": "/warehousing/locations",
+          "name": "Locations",
+          "slug": "warehousing.locations"
+        },
+        {
+          "url": "/warehousing/zones",
+          "name": "Zones & Bins",
+          "slug": "warehousing.zones"
+        },
+        {
+          "url": "/warehousing/picking",
+          "name": "Picking",
+          "slug": "warehousing.picking"
+        },
+        {
+          "url": "/warehousing/putaway",
+          "name": "Putaway",
+          "slug": "warehousing.putaway"
+        }
+      ]
+    },
+    {
+      "name": "Inventory Planning",
+      "icon": "menu-icon tf-icons ri-calendar-check-line",
+      "slug": "inventory-planning",
+      "submenu": [
+        {
+          "url": "/inventory-planning/reorder-points",
+          "name": "Reorder Points",
+          "slug": "inventory-planning.reorder-points"
+        },
+        {
+          "url": "/inventory-planning/forecasting",
+          "name": "Demand Forecasting",
+          "slug": "inventory-planning.forecasting"
+        },
+        {
+          "url": "/inventory-planning/abc-analysis",
+          "name": "ABC Analysis",
+          "slug": "inventory-planning.abc-analysis"
+        }
+      ]
+    }
+  ]
+}

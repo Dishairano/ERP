@@ -1,0 +1,142 @@
+{
+  "menu": [
+    {
+      "menuHeader": "Supply Chain"
+    },
+    {
+      "name": "Procurement",
+      "icon": "menu-icon tf-icons ri-shopping-basket-line",
+      "slug": "procurement",
+      "submenu": [
+        {
+          "url": "/procurement/dashboard",
+          "name": "Dashboard",
+          "slug": "procurement.dashboard"
+        },
+        {
+          "url": "/procurement/purchase-orders",
+          "name": "Purchase Orders",
+          "slug": "procurement.purchase-orders"
+        },
+        {
+          "url": "/procurement/requisitions",
+          "name": "Requisitions",
+          "slug": "procurement.requisitions"
+        },
+        {
+          "url": "/procurement/contracts",
+          "name": "Contracts",
+          "slug": "procurement.contracts"
+        }
+      ]
+    },
+    {
+      "name": "Suppliers",
+      "icon": "menu-icon tf-icons ri-user-follow-line",
+      "slug": "suppliers",
+      "submenu": [
+        {
+          "url": "/suppliers",
+          "name": "Directory",
+          "slug": "suppliers.directory"
+        },
+        {
+          "url": "/suppliers/performance",
+          "name": "Performance",
+          "slug": "suppliers.performance"
+        },
+        {
+          "url": "/suppliers/onboarding",
+          "name": "Onboarding",
+          "slug": "suppliers.onboarding"
+        },
+        {
+          "url": "/suppliers/evaluation",
+          "name": "Evaluation",
+          "slug": "suppliers.evaluation"
+        }
+      ]
+    },
+    {
+      "name": "Logistics",
+      "icon": "menu-icon tf-icons ri-truck-line",
+      "slug": "logistics",
+      "submenu": [
+        {
+          "url": "/logistics/shipments",
+          "name": "Shipments",
+          "slug": "logistics.shipments"
+        },
+        {
+          "url": "/logistics/tracking",
+          "name": "Tracking",
+          "slug": "logistics.tracking"
+        },
+        {
+          "url": "/logistics/carriers",
+          "name": "Carriers",
+          "slug": "logistics.carriers"
+        },
+        {
+          "url": "/logistics/routes",
+          "name": "Route Planning",
+          "slug": "logistics.routes"
+        }
+      ]
+    },
+    {
+      "name": "Demand Planning",
+      "icon": "menu-icon tf-icons ri-line-chart-line",
+      "slug": "demand-planning",
+      "submenu": [
+        {
+          "url": "/demand-planning/forecasts",
+          "name": "Forecasts",
+          "slug": "demand-planning.forecasts"
+        },
+        {
+          "url": "/demand-planning/scenarios",
+          "name": "Scenarios",
+          "slug": "demand-planning.scenarios"
+        },
+        {
+          "url": "/demand-planning/accuracy",
+          "name": "Forecast Accuracy",
+          "slug": "demand-planning.accuracy"
+        },
+        {
+          "url": "/demand-planning/trends",
+          "name": "Market Trends",
+          "slug": "demand-planning.trends"
+        }
+      ]
+    },
+    {
+      "name": "Risk Management",
+      "icon": "menu-icon tf-icons ri-alert-line",
+      "slug": "risk-management",
+      "submenu": [
+        {
+          "url": "/risk-management/assessment",
+          "name": "Risk Assessment",
+          "slug": "risk-management.assessment"
+        },
+        {
+          "url": "/risk-management/mitigation",
+          "name": "Mitigation Plans",
+          "slug": "risk-management.mitigation"
+        },
+        {
+          "url": "/risk-management/monitoring",
+          "name": "Monitoring",
+          "slug": "risk-management.monitoring"
+        },
+        {
+          "url": "/risk-management/compliance",
+          "name": "Compliance",
+          "slug": "risk-management.compliance"
+        }
+      ]
+    }
+  ]
+}

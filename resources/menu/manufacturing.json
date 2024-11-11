@@ -1,0 +1,157 @@
+{
+  "menu": [
+    {
+      "menuHeader": "Manufacturing"
+    },
+    {
+      "name": "Production",
+      "icon": "menu-icon tf-icons ri-tools-line",
+      "slug": "production",
+      "submenu": [
+        {
+          "url": "/production/dashboard",
+          "name": "Dashboard",
+          "slug": "production.dashboard"
+        },
+        {
+          "url": "/production/orders",
+          "name": "Production Orders",
+          "slug": "production.orders"
+        },
+        {
+          "url": "/production/planning",
+          "name": "Production Planning",
+          "slug": "production.planning"
+        },
+        {
+          "url": "/production/scheduling",
+          "name": "Scheduling",
+          "slug": "production.scheduling"
+        }
+      ]
+    },
+    {
+      "name": "Bill of Materials",
+      "icon": "menu-icon tf-icons ri-file-list-2-line",
+      "slug": "bom",
+      "submenu": [
+        {
+          "url": "/bom/items",
+          "name": "BOM Items",
+          "slug": "bom.items"
+        },
+        {
+          "url": "/bom/versions",
+          "name": "BOM Versions",
+          "slug": "bom.versions"
+        },
+        {
+          "url": "/bom/costing",
+          "name": "Cost Analysis",
+          "slug": "bom.costing"
+        },
+        {
+          "url": "/bom/engineering",
+          "name": "Engineering Changes",
+          "slug": "bom.engineering"
+        }
+      ]
+    },
+    {
+      "name": "Work Centers",
+      "icon": "menu-icon tf-icons ri-community-line",
+      "slug": "work-centers",
+      "submenu": [
+        {
+          "url": "/work-centers",
+          "name": "Overview",
+          "slug": "work-centers.index"
+        },
+        {
+          "url": "/work-centers/capacity",
+          "name": "Capacity Planning",
+          "slug": "work-centers.capacity"
+        },
+        {
+          "url": "/work-centers/maintenance",
+          "name": "Maintenance",
+          "slug": "work-centers.maintenance"
+        },
+        {
+          "url": "/work-centers/efficiency",
+          "name": "Efficiency Analysis",
+          "slug": "work-centers.efficiency"
+        }
+      ]
+    },
+    {
+      "name": "Quality Control",
+      "icon": "menu-icon tf-icons ri-test-tube-line",
+      "slug": "manufacturing-quality",
+      "submenu": [
+        {
+          "url": "/manufacturing-quality/inspections",
+          "name": "Production Inspections",
+          "slug": "manufacturing-quality.inspections"
+        },
+        {
+          "url": "/manufacturing-quality/inventory",
+          "name": "Inventory Inspections",
+          "slug": "manufacturing-quality.inventory"
+        },
+        {
+          "url": "/manufacturing-quality/standards",
+          "name": "Quality Standards",
+          "slug": "manufacturing-quality.standards"
+        },
+        {
+          "url": "/manufacturing-quality/control-charts",
+          "name": "Control Charts",
+          "slug": "manufacturing-quality.control-charts"
+        },
+        {
+          "url": "/manufacturing-quality/non-conformance",
+          "name": "Non-Conformance",
+          "slug": "manufacturing-quality.non-conformance"
+        },
+        {
+          "url": "/manufacturing-quality/quarantine",
+          "name": "Quarantine",
+          "slug": "manufacturing-quality.quarantine"
+        },
+        {
+          "url": "/manufacturing-quality/returns",
+          "name": "Returns",
+          "slug": "manufacturing-quality.returns"
+        }
+      ]
+    },
+    {
+      "name": "MRP",
+      "icon": "menu-icon tf-icons ri-stack-line",
+      "slug": "mrp",
+      "submenu": [
+        {
+          "url": "/mrp/planning",
+          "name": "Material Planning",
+          "slug": "mrp.planning"
+        },
+        {
+          "url": "/mrp/requirements",
+          "name": "Requirements",
+          "slug": "mrp.requirements"
+        },
+        {
+          "url": "/mrp/forecasting",
+          "name": "Forecasting",
+          "slug": "mrp.forecasting"
+        },
+        {
+          "url": "/mrp/scenarios",
+          "name": "What-if Scenarios",
+          "slug": "mrp.scenarios"
+        }
+      ]
+    }
+  ]
+}

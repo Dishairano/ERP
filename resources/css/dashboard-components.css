@@ -1,0 +1,247 @@
+/* Dashboard Component Base Styles */
+.dashboard-component {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.dashboard-component .card {
+  height: 100%;
+  margin-bottom: 0;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  transition: box-shadow 0.3s ease;
+}
+
+.dashboard-component .card:hover {
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.dashboard-component.fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1050;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.dashboard-component.fullscreen .card {
+  height: calc(100vh - 2rem);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.dashboard-component.refreshing::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.7);
+  z-index: 1;
+}
+
+.dashboard-component.refreshing::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 2rem;
+  height: 2rem;
+  border: 0.25rem solid #f3f3f3;
+  border-top: 0.25rem solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  z-index: 2;
+}
+
+/* Chart Component Styles */
+.component-chart .chart-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.component-chart canvas {
+  max-width: 100%;
+}
+
+/* Table Component Styles */
+.component-table .table-responsive {
+  min-height: 200px;
+}
+
+.component-table table {
+  margin-bottom: 0;
+}
+
+.component-table th.sortable {
+  cursor: pointer;
+}
+
+.component-table th.sortable::after {
+  content: '↕';
+  margin-left: 0.5rem;
+  opacity: 0.5;
+}
+
+.component-table th.sorting_asc::after {
+  content: '↑';
+  opacity: 1;
+}
+
+.component-table th.sorting_desc::after {
+  content: '↓';
+  opacity: 1;
+}
+
+/* Metric Component Styles */
+.component-metric .metric-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.component-metric .metric-value h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.component-metric .metric-change {
+  display: flex;
+  align-items: center;
+  font-size: 0.875rem;
+}
+
+.component-metric .metric-sparkline {
+  margin-top: 1rem;
+}
+
+/* List Component Styles */
+.component-list .list-container {
+  position: relative;
+}
+
+.component-list .list-item {
+  position: relative;
+  padding: 1rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  transition: background-color 0.2s ease;
+}
+
+.component-list .list-item:last-child {
+  border-bottom: none;
+}
+
+.component-list .list-item:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.component-list .list-item-actions {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.component-list .list-item:hover .list-item-actions {
+  opacity: 1;
+}
+
+.component-list .drag-handle {
+  cursor: move;
+  opacity: 0.5;
+  transition: opacity 0.2s ease;
+}
+
+.component-list .list-item:hover .drag-handle {
+  opacity: 1;
+}
+
+.component-list .sentinel {
+  height: 1px;
+  visibility: hidden;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .dashboard-component .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .dashboard-component .card-actions {
+    margin-top: 0.5rem;
+    align-self: flex-end;
+  }
+
+  .component-metric .metric-value h2 {
+    font-size: 1.5rem;
+  }
+
+  .component-list .list-item-actions {
+    position: static;
+    transform: none;
+    opacity: 1;
+    margin-top: 0.5rem;
+  }
+}
+
+/* Animations */
+@keyframes spin {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* Theme-specific styles */
+[data-bs-theme='dark'] .dashboard-component .card {
+  background-color: #2b3035;
+  border-color: #373b3e;
+}
+
+[data-bs-theme='dark'] .dashboard-component.fullscreen {
+  background: rgba(33, 37, 41, 0.95);
+}
+
+[data-bs-theme='dark'] .dashboard-component.refreshing::after {
+  background: rgba(33, 37, 41, 0.7);
+}
+
+[data-bs-theme='dark'] .component-list .list-item {
+  border-bottom-color: rgba(255, 255, 255, 0.05);
+}
+
+[data-bs-theme='dark'] .component-list .list-item:hover {
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+/* Print styles */
+@media print {
+  .dashboard-component {
+    break-inside: avoid;
+  }
+
+  .dashboard-component .card {
+    box-shadow: none !important;
+    border: 1px solid #dee2e6;
+  }
+
+  .dashboard-component .card-actions,
+  .dashboard-component .list-item-actions {
+    display: none !important;
+  }
+}

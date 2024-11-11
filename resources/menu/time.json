@@ -1,0 +1,157 @@
+{
+  "menu": [
+    {
+      "menuHeader": "Time Management"
+    },
+    {
+      "name": "Time Registration",
+      "icon": "menu-icon tf-icons ri-time-line",
+      "slug": "time-registration",
+      "submenu": [
+        {
+          "url": "/time-registration/dashboard",
+          "name": "Dashboard",
+          "slug": "time-registration.dashboard"
+        },
+        {
+          "url": "/time-registration",
+          "name": "Overview",
+          "slug": "time-registration.index"
+        },
+        {
+          "url": "/time-registration/create",
+          "name": "Register Time",
+          "slug": "time-registration.create"
+        },
+        {
+          "url": "/time-registration/calendar",
+          "name": "Calendar View",
+          "slug": "time-registration.calendar"
+        },
+        {
+          "url": "/time-registration/approvals",
+          "name": "Approvals",
+          "slug": "time-registration.approvals"
+        }
+      ]
+    },
+    {
+      "name": "Project Time",
+      "icon": "menu-icon tf-icons ri-calendar-check-line",
+      "slug": "project-time",
+      "submenu": [
+        {
+          "url": "/project-time/tracking",
+          "name": "Time Tracking",
+          "slug": "project-time.tracking"
+        },
+        {
+          "url": "/project-time/allocation",
+          "name": "Resource Allocation",
+          "slug": "project-time.allocation"
+        },
+        {
+          "url": "/project-time/budgets",
+          "name": "Time Budgets",
+          "slug": "project-time.budgets"
+        },
+        {
+          "url": "/project-time/analysis",
+          "name": "Time Analysis",
+          "slug": "project-time.analysis"
+        }
+      ]
+    },
+    {
+      "name": "Leave Management",
+      "icon": "menu-icon tf-icons ri-calendar-event-line",
+      "slug": "leave-management",
+      "submenu": [
+        {
+          "url": "/leave-requests",
+          "name": "Leave Requests",
+          "slug": "leave-requests.index"
+        },
+        {
+          "url": "/leave-requests/create",
+          "name": "Request Leave",
+          "slug": "leave-requests.create"
+        },
+        {
+          "url": "/leave-management/calendar",
+          "name": "Team Calendar",
+          "slug": "leave-management.calendar"
+        },
+        {
+          "url": "/leave-management/balances",
+          "name": "Leave Balances",
+          "slug": "leave-management.balances"
+        },
+        {
+          "url": "/leave-management/policies",
+          "name": "Leave Policies",
+          "slug": "leave-management.policies"
+        }
+      ]
+    },
+    {
+      "name": "Scheduling",
+      "icon": "menu-icon tf-icons ri-calendar-todo-line",
+      "slug": "scheduling",
+      "submenu": [
+        {
+          "url": "/scheduling/shifts",
+          "name": "Shift Planning",
+          "slug": "scheduling.shifts"
+        },
+        {
+          "url": "/scheduling/roster",
+          "name": "Team Roster",
+          "slug": "scheduling.roster"
+        },
+        {
+          "url": "/scheduling/availability",
+          "name": "Availability",
+          "slug": "scheduling.availability"
+        },
+        {
+          "url": "/scheduling/overtime",
+          "name": "Overtime",
+          "slug": "scheduling.overtime"
+        }
+      ]
+    },
+    {
+      "name": "Reports",
+      "icon": "menu-icon tf-icons ri-file-chart-line",
+      "slug": "time-reports",
+      "submenu": [
+        {
+          "url": "/time-registration/report",
+          "name": "Time Reports",
+          "slug": "time-registration.report"
+        },
+        {
+          "url": "/time-reports/attendance",
+          "name": "Attendance",
+          "slug": "time-reports.attendance"
+        },
+        {
+          "url": "/time-reports/overtime",
+          "name": "Overtime Analysis",
+          "slug": "time-reports.overtime"
+        },
+        {
+          "url": "/time-reports/productivity",
+          "name": "Productivity",
+          "slug": "time-reports.productivity"
+        },
+        {
+          "url": "/time-reports/cost",
+          "name": "Cost Analysis",
+          "slug": "time-reports.cost"
+        }
+      ]
+    }
+  ]
+}

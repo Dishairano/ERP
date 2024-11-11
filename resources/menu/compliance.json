@@ -1,0 +1,41 @@
+{
+  "menu": [
+    {
+      "name": "Compliance",
+      "icon": "ri-shield-check-line",
+      "slug": "compliance",
+      "submenu": [
+        {
+          "url": "/compliance/requirements",
+          "name": "Requirements",
+          "icon": "ri-file-list-3-line",
+          "slug": "compliance.requirements.index"
+        },
+        {
+          "url": "/compliance/audits",
+          "name": "Audits",
+          "icon": "ri-audit-line",
+          "slug": "compliance.audits.index"
+        },
+        {
+          "url": "/compliance/documents",
+          "name": "Documents",
+          "icon": "ri-folder-line",
+          "slug": "compliance.documents.index"
+        },
+        {
+          "url": "/compliance/trainings",
+          "name": "Trainings",
+          "icon": "ri-book-open-line",
+          "slug": "compliance.trainings.index"
+        },
+        {
+          "url": "/compliance/notifications",
+          "name": "Notifications",
+          "icon": "ri-notification-line",
+          "slug": "compliance.notifications.index"
+        }
+      ]
+    }
+  ]
+}

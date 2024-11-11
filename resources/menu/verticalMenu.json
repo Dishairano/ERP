@@ -1,0 +1,46 @@
+{
+  "menu": [
+    {
+      "include": "overview.json"
+    },
+    {
+      "include": "projects.json"
+    },
+    {
+      "include": "settings.json"
+    },
+    {
+      "include": "time.json"
+    },
+    {
+      "include": "finance.json"
+    },
+    {
+      "include": "hrm.json"
+    },
+    {
+      "include": "supply-chain.json"
+    },
+    {
+      "include": "sales.json"
+    },
+    {
+      "include": "inventory.json"
+    },
+    {
+      "include": "crm.json"
+    },
+    {
+      "include": "manufacturing.json"
+    },
+    {
+      "include": "analytics.json"
+    },
+    {
+      "include": "compliance.json"
+    },
+    {
+      "include": "security.json"
+    }
+  ]
+}

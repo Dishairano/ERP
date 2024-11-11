@@ -1,0 +1,147 @@
+{
+  "menu": [
+    {
+      "menuHeader": "Sales Management"
+    },
+    {
+      "name": "Sales Orders",
+      "icon": "menu-icon tf-icons ri-shopping-cart-line",
+      "slug": "sales",
+      "submenu": [
+        {
+          "url": "/sales/dashboard",
+          "name": "Dashboard",
+          "slug": "sales.dashboard"
+        },
+        {
+          "url": "/sales/orders",
+          "name": "Orders",
+          "slug": "sales.orders"
+        },
+        {
+          "url": "/sales/quotes",
+          "name": "Quotations",
+          "slug": "sales.quotes"
+        },
+        {
+          "url": "/sales/invoices",
+          "name": "Invoices",
+          "slug": "sales.invoices"
+        },
+        {
+          "url": "/sales/returns",
+          "name": "Returns",
+          "slug": "sales.returns"
+        }
+      ]
+    },
+    {
+      "name": "Pricing",
+      "icon": "menu-icon tf-icons ri-price-tag-3-line",
+      "slug": "pricing",
+      "submenu": [
+        {
+          "url": "/pricing/price-lists",
+          "name": "Price Lists",
+          "slug": "pricing.price-lists"
+        },
+        {
+          "url": "/pricing/discounts",
+          "name": "Discounts",
+          "slug": "pricing.discounts"
+        },
+        {
+          "url": "/pricing/promotions",
+          "name": "Promotions",
+          "slug": "pricing.promotions"
+        },
+        {
+          "url": "/pricing/special-offers",
+          "name": "Special Offers",
+          "slug": "pricing.special-offers"
+        }
+      ]
+    },
+    {
+      "name": "Customers",
+      "icon": "menu-icon tf-icons ri-user-star-line",
+      "slug": "customers",
+      "submenu": [
+        {
+          "url": "/customers",
+          "name": "Customer List",
+          "slug": "customers.index"
+        },
+        {
+          "url": "/customers/segments",
+          "name": "Segments",
+          "slug": "customers.segments"
+        },
+        {
+          "url": "/customers/credit-limits",
+          "name": "Credit Limits",
+          "slug": "customers.credit-limits"
+        },
+        {
+          "url": "/customers/loyalty",
+          "name": "Loyalty Program",
+          "slug": "customers.loyalty"
+        }
+      ]
+    },
+    {
+      "name": "Sales Analysis",
+      "icon": "menu-icon tf-icons ri-line-chart-line",
+      "slug": "sales-analysis",
+      "submenu": [
+        {
+          "url": "/sales-analysis/performance",
+          "name": "Performance",
+          "slug": "sales-analysis.performance"
+        },
+        {
+          "url": "/sales-analysis/trends",
+          "name": "Trends",
+          "slug": "sales-analysis.trends"
+        },
+        {
+          "url": "/sales-analysis/forecasting",
+          "name": "Forecasting",
+          "slug": "sales-analysis.forecasting"
+        },
+        {
+          "url": "/sales-analysis/reports",
+          "name": "Reports",
+          "slug": "sales-analysis.reports"
+        }
+      ]
+    },
+    {
+      "name": "E-commerce",
+      "icon": "menu-icon tf-icons ri-shopping-bag-line",
+      "slug": "ecommerce",
+      "submenu": [
+        {
+          "url": "/ecommerce/products",
+          "name": "Products",
+          "slug": "ecommerce.products"
+        },
+        {
+          "url": "/ecommerce/orders",
+          "name": "Orders",
+          "slug": "ecommerce.orders"
+        },
+        {
+          "url": "/ecommerce/marketplace",
+          "name": "Marketplace",
+          "slug": "ecommerce.marketplace"
+        },
+        {
+          "url": "/ecommerce/integration",
+          "name": "Integration",
+          "slug": "ecommerce.integration"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,130 @@
+{
+  "menu": [
+    {
+      "name": "Human Resources",
+      "icon": "ri-team-line",
+      "slug": "hrm",
+      "submenu": [
+        {
+          "name": "Recruitment",
+          "icon": "ri-user-search-line",
+          "slug": "recruitment",
+          "submenu": [
+            {
+              "url": "/job-postings",
+              "name": "Job Postings",
+              "icon": "ri-briefcase-line",
+              "slug": "job-postings.index"
+            },
+            {
+              "url": "/candidates",
+              "name": "Candidates",
+              "icon": "ri-user-follow-line",
+              "slug": "candidates.index"
+            },
+            {
+              "url": "/interviews",
+              "name": "Interviews",
+              "icon": "ri-calendar-event-line",
+              "slug": "interviews.index"
+            },
+            {
+              "url": "/interviews/calendar",
+              "name": "Interview Calendar",
+              "icon": "ri-calendar-line",
+              "slug": "interviews.calendar"
+            },
+            {
+              "url": "/assessments",
+              "name": "Assessments",
+              "icon": "ri-task-line",
+              "slug": "assessments.index"
+            }
+          ]
+        },
+        {
+          "name": "Employee Management",
+          "icon": "ri-user-settings-line",
+          "slug": "employees",
+          "submenu": [
+            {
+              "url": "/employees",
+              "name": "Employees",
+              "icon": "ri-user-line",
+              "slug": "employees.index"
+            },
+            {
+              "url": "/departments",
+              "name": "Departments",
+              "icon": "ri-building-line",
+              "slug": "departments.index"
+            },
+            {
+              "url": "/salaries",
+              "name": "Salaries",
+              "icon": "ri-money-dollar-circle-line",
+              "slug": "salaries.index"
+            },
+            {
+              "url": "/benefits",
+              "name": "Benefits",
+              "icon": "ri-heart-line",
+              "slug": "benefits.index"
+            }
+          ]
+        },
+        {
+          "name": "Time & Attendance",
+          "icon": "ri-time-line",
+          "slug": "attendance",
+          "submenu": [
+            {
+              "url": "/attendance",
+              "name": "Attendance",
+              "icon": "ri-calendar-check-line",
+              "slug": "attendance.index"
+            },
+            {
+              "url": "/leave-requests",
+              "name": "Leave Requests",
+              "icon": "ri-calendar-event-line",
+              "slug": "leave-requests.index"
+            }
+          ]
+        },
+        {
+          "name": "Performance",
+          "icon": "ri-line-chart-line",
+          "slug": "performance",
+          "submenu": [
+            {
+              "url": "/performance-reviews",
+              "name": "Reviews",
+              "icon": "ri-star-line",
+              "slug": "performance-reviews.index"
+            },
+            {
+              "url": "/training",
+              "name": "Training",
+              "icon": "ri-graduation-cap-line",
+              "slug": "training.index"
+            }
+          ]
+        },
+        {
+          "name": "Documents",
+          "icon": "ri-file-list-line",
+          "slug": "documents",
+          "submenu": [
+            {
+              "url": "/employee-documents",
+              "name": "Employee Documents",
+              "icon": "ri-file-user-line",
+              "slug": "employee-documents.index"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

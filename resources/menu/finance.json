@@ -1,0 +1,135 @@
+{
+  "menu": [
+    {
+      "menuHeader": "Finance"
+    },
+    {
+      "name": "Budgets",
+      "icon": "menu-icon tf-icons ri-money-dollar-circle-line",
+      "slug": "budgets",
+      "submenu": [
+        {
+          "url": "/budgets",
+          "name": "Overview",
+          "slug": "budgets.index"
+        },
+        {
+          "url": "/budgets/create",
+          "name": "Create Budget",
+          "slug": "budgets.create"
+        },
+        {
+          "url": "/budgets/departments",
+          "name": "Department Budgets",
+          "slug": "budgets.departments"
+        },
+        {
+          "url": "/preset-departments",
+          "name": "Department Presets",
+          "slug": "preset-departments.index"
+        },
+        {
+          "url": "/budgets/projects",
+          "name": "Project Budgets",
+          "slug": "budgets.projects"
+        },
+        {
+          "url": "/budgets/scenarios",
+          "name": "Budget Scenarios",
+          "slug": "budgets.scenarios"
+        },
+        {
+          "url": "/budgets/reports",
+          "name": "Reports",
+          "slug": "budgets.reports"
+        }
+      ]
+    },
+    {
+      "name": "Accounting",
+      "icon": "menu-icon tf-icons ri-bank-line",
+      "slug": "accounting",
+      "submenu": [
+        {
+          "url": "/accounting/general-ledger",
+          "name": "General Ledger",
+          "slug": "accounting.general-ledger"
+        },
+        {
+          "url": "/accounting/accounts-payable",
+          "name": "Accounts Payable",
+          "slug": "accounting.accounts-payable"
+        },
+        {
+          "url": "/accounting/accounts-receivable",
+          "name": "Accounts Receivable",
+          "slug": "accounting.accounts-receivable"
+        },
+        {
+          "url": "/accounting/fixed-assets",
+          "name": "Fixed Assets",
+          "slug": "accounting.fixed-assets"
+        },
+        {
+          "url": "/accounting/tax-management",
+          "name": "Tax Management",
+          "slug": "accounting.tax-management"
+        }
+      ]
+    },
+    {
+      "name": "Financial Reports",
+      "icon": "menu-icon tf-icons ri-file-chart-line",
+      "slug": "financial-reports",
+      "submenu": [
+        {
+          "url": "/financial-reports/balance-sheet",
+          "name": "Balance Sheet",
+          "slug": "financial-reports.balance-sheet"
+        },
+        {
+          "url": "/financial-reports/income-statement",
+          "name": "Income Statement",
+          "slug": "financial-reports.income-statement"
+        },
+        {
+          "url": "/financial-reports/cash-flow",
+          "name": "Cash Flow",
+          "slug": "financial-reports.cash-flow"
+        },
+        {
+          "url": "/financial-reports/custom",
+          "name": "Custom Reports",
+          "slug": "financial-reports.custom"
+        }
+      ]
+    },
+    {
+      "name": "Treasury",
+      "icon": "menu-icon tf-icons ri-safe-line",
+      "slug": "treasury",
+      "submenu": [
+        {
+          "url": "/treasury/cash-management",
+          "name": "Cash Management",
+          "slug": "treasury.cash-management"
+        },
+        {
+          "url": "/treasury/bank-accounts",
+          "name": "Bank Accounts",
+          "slug": "treasury.bank-accounts"
+        },
+        {
+          "url": "/treasury/investments",
+          "name": "Investments",
+          "slug": "treasury.investments"
+        },
+        {
+          "url": "/treasury/forecasting",
+          "name": "Cash Forecasting",
+          "slug": "treasury.forecasting"
+        }
+      ]
+    }
+  ]
+}

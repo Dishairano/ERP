@@ -1,0 +1,142 @@
+{
+  "menu": [
+    {
+      "menuHeader": "Customer Relations"
+    },
+    {
+      "name": "Contacts",
+      "icon": "menu-icon tf-icons ri-contacts-line",
+      "slug": "contacts",
+      "submenu": [
+        {
+          "url": "/contacts/dashboard",
+          "name": "Dashboard",
+          "slug": "contacts.dashboard"
+        },
+        {
+          "url": "/contacts/customers",
+          "name": "Customers",
+          "slug": "contacts.customers"
+        },
+        {
+          "url": "/contacts/leads",
+          "name": "Leads",
+          "slug": "contacts.leads"
+        },
+        {
+          "url": "/contacts/prospects",
+          "name": "Prospects",
+          "slug": "contacts.prospects"
+        }
+      ]
+    },
+    {
+      "name": "Opportunities",
+      "icon": "menu-icon tf-icons ri-focus-2-line",
+      "slug": "opportunities",
+      "submenu": [
+        {
+          "url": "/opportunities",
+          "name": "Pipeline",
+          "slug": "opportunities.pipeline"
+        },
+        {
+          "url": "/opportunities/deals",
+          "name": "Deals",
+          "slug": "opportunities.deals"
+        },
+        {
+          "url": "/opportunities/forecasting",
+          "name": "Forecasting",
+          "slug": "opportunities.forecasting"
+        },
+        {
+          "url": "/opportunities/won-lost",
+          "name": "Won/Lost Analysis",
+          "slug": "opportunities.won-lost"
+        }
+      ]
+    },
+    {
+      "name": "Marketing",
+      "icon": "menu-icon tf-icons ri-advertisement-line",
+      "slug": "marketing",
+      "submenu": [
+        {
+          "url": "/marketing/campaigns",
+          "name": "Campaigns",
+          "slug": "marketing.campaigns"
+        },
+        {
+          "url": "/marketing/email",
+          "name": "Email Marketing",
+          "slug": "marketing.email"
+        },
+        {
+          "url": "/marketing/social",
+          "name": "Social Media",
+          "slug": "marketing.social"
+        },
+        {
+          "url": "/marketing/analytics",
+          "name": "Analytics",
+          "slug": "marketing.analytics"
+        }
+      ]
+    },
+    {
+      "name": "Service",
+      "icon": "menu-icon tf-icons ri-customer-service-2-line",
+      "slug": "service",
+      "submenu": [
+        {
+          "url": "/service/tickets",
+          "name": "Support Tickets",
+          "slug": "service.tickets"
+        },
+        {
+          "url": "/service/knowledge-base",
+          "name": "Knowledge Base",
+          "slug": "service.knowledge-base"
+        },
+        {
+          "url": "/service/sla",
+          "name": "SLA Management",
+          "slug": "service.sla"
+        },
+        {
+          "url": "/service/feedback",
+          "name": "Customer Feedback",
+          "slug": "service.feedback"
+        }
+      ]
+    },
+    {
+      "name": "Communication",
+      "icon": "menu-icon tf-icons ri-message-2-line",
+      "slug": "communication",
+      "submenu": [
+        {
+          "url": "/communication/inbox",
+          "name": "Inbox",
+          "slug": "communication.inbox"
+        },
+        {
+          "url": "/communication/templates",
+          "name": "Templates",
+          "slug": "communication.templates"
+        },
+        {
+          "url": "/communication/automation",
+          "name": "Automation",
+          "slug": "communication.automation"
+        },
+        {
+          "url": "/communication/history",
+          "name": "History",
+          "slug": "communication.history"
+        }
+      ]
+    }
+  ]
+}

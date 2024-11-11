@@ -1,0 +1,24 @@
+{
+  "menu": [
+    {
+      "menuHeader": "Projects"
+    },
+    {
+      "name": "Project Management",
+      "slug": "project.management",
+      "icon": "menu-icon tf-icons ri-projector-line",
+      "submenu": [
+        {
+          "url": "/projects/dashboard",
+          "name": "Project Dashboard",
+          "slug": "projects.dashboard"
+        },
+        {
+          "url": "/projects",
+          "name": "Projects List",
+          "slug": "projects.index"
+        }
+      ]
+    }
+  ]
+}

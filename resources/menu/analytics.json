@@ -1,0 +1,169 @@
+{
+  "menu": [
+    {
+      "menuHeader": "Analytics & Business Intelligence"
+    },
+    {
+      "name": "Dashboards",
+      "icon": "menu-icon tf-icons ri-dashboard-3-line",
+      "slug": "analytics-dashboards",
+      "submenu": [
+        {
+          "url": "/analytics/executive",
+          "name": "Executive",
+          "slug": "analytics.executive"
+        },
+        {
+          "url": "/analytics/financial",
+          "name": "Financial",
+          "slug": "analytics.financial"
+        },
+        {
+          "url": "/analytics/operational",
+          "name": "Operational",
+          "slug": "analytics.operational"
+        },
+        {
+          "url": "/analytics/custom",
+          "name": "Custom Dashboards",
+          "slug": "analytics.custom"
+        }
+      ]
+    },
+    {
+      "name": "Reports",
+      "icon": "menu-icon tf-icons ri-file-chart-line",
+      "slug": "reports",
+      "submenu": [
+        {
+          "url": "/reports/standard",
+          "name": "Standard Reports",
+          "slug": "reports.standard"
+        },
+        {
+          "url": "/reports/custom",
+          "name": "Custom Reports",
+          "slug": "reports.custom"
+        },
+        {
+          "url": "/reports/scheduler",
+          "name": "Report Scheduler",
+          "slug": "reports.scheduler"
+        },
+        {
+          "url": "/reports/exports",
+          "name": "Export Manager",
+          "slug": "reports.exports"
+        }
+      ]
+    },
+    {
+      "name": "Business Intelligence",
+      "icon": "menu-icon tf-icons ri-bubble-chart-line",
+      "slug": "bi",
+      "submenu": [
+        {
+          "url": "/bi/analysis",
+          "name": "Data Analysis",
+          "slug": "bi.analysis"
+        },
+        {
+          "url": "/bi/visualization",
+          "name": "Visualizations",
+          "slug": "bi.visualization"
+        },
+        {
+          "url": "/bi/predictive",
+          "name": "Predictive Analytics",
+          "slug": "bi.predictive"
+        },
+        {
+          "url": "/bi/mining",
+          "name": "Data Mining",
+          "slug": "bi.mining"
+        }
+      ]
+    },
+    {
+      "name": "KPIs",
+      "icon": "menu-icon tf-icons ri-speed-up-line",
+      "slug": "kpis",
+      "submenu": [
+        {
+          "url": "/kpis/metrics",
+          "name": "Key Metrics",
+          "slug": "kpis.metrics"
+        },
+        {
+          "url": "/kpis/scorecards",
+          "name": "Scorecards",
+          "slug": "kpis.scorecards"
+        },
+        {
+          "url": "/kpis/benchmarks",
+          "name": "Benchmarking",
+          "slug": "kpis.benchmarks"
+        },
+        {
+          "url": "/kpis/alerts",
+          "name": "Alerts & Notifications",
+          "slug": "kpis.alerts"
+        }
+      ]
+    },
+    {
+      "name": "Data Management",
+      "icon": "menu-icon tf-icons ri-database-2-line",
+      "slug": "data-management",
+      "submenu": [
+        {
+          "url": "/data-management/integration",
+          "name": "Data Integration",
+          "slug": "data-management.integration"
+        },
+        {
+          "url": "/data-management/quality",
+          "name": "Data Quality",
+          "slug": "data-management.quality"
+        },
+        {
+          "url": "/data-management/governance",
+          "name": "Data Governance",
+          "slug": "data-management.governance"
+        },
+        {
+          "url": "/data-management/security",
+          "name": "Data Security",
+          "slug": "data-management.security"
+        }
+      ]
+    },
+    {
+      "name": "Advanced Analytics",
+      "icon": "menu-icon tf-icons ri-brain-line",
+      "slug": "advanced-analytics",
+      "submenu": [
+        {
+          "url": "/advanced-analytics/ml",
+          "name": "Machine Learning",
+          "slug": "advanced-analytics.ml"
+        },
+        {
+          "url": "/advanced-analytics/forecasting",
+          "name": "Forecasting",
+          "slug": "advanced-analytics.forecasting"
+        },
+        {
+          "url": "/advanced-analytics/optimization",
+          "name": "Optimization",
+          "slug": "advanced-analytics.optimization"
+        },
+        {
+          "url": "/advanced-analytics/scenarios",
+          "name": "Scenario Analysis",
+          "slug": "advanced-analytics.scenarios"
+        }
+      ]
+    }
+  ]
+}
