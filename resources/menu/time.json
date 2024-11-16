@@ -19,11 +19,6 @@
           "slug": "time-registration.index"
         },
         {
-          "url": "/time-registration/create",
-          "name": "Register Time",
-          "slug": "time-registration.create"
-        },
-        {
           "url": "/time-registration/calendar",
           "name": "Calendar View",
           "slug": "time-registration.calendar"
@@ -71,11 +66,6 @@
           "url": "/leave-requests",
           "name": "Leave Requests",
           "slug": "leave-requests.index"
-        },
-        {
-          "url": "/leave-requests/create",
-          "name": "Request Leave",
-          "slug": "leave-requests.create"
         },
         {
           "url": "/leave-management/calendar",

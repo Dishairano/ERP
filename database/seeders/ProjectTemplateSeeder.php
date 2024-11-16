@@ -3,22 +3,17 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\ProjectTemplate;
+use Illuminate\Support\Facades\DB;
 use App\Models\User;
 
 class ProjectTemplateSeeder extends Seeder
 {
   public function run()
   {
-    $adminUser = User::where('role', 'admin')->first();
+    // Get existing admin user
+    $adminUser = DB::table('users')->where('email', 'admin@example.com')->first();
     if (!$adminUser) {
-      $adminUser = User::create([
-        'name' => 'System Admin',
-        'email' => 'admin@system.com',
-        'password' => bcrypt('admin123'),
-        'role' => 'admin',
-        'is_active' => true
-      ]);
+      throw new \Exception('Admin user not found. Please ensure AdminUserSeeder has been run.');
     }
 
     $templates = [
@@ -101,10 +96,12 @@ class ProjectTemplateSeeder extends Seeder
     ];
 
     foreach ($templates as $template) {
-      ProjectTemplate::create(array_merge($template, [
+      DB::table('project_templates')->insert(array_merge($template, [
         'is_active' => true,
         'created_by' => $adminUser->id,
-        'updated_by' => $adminUser->id
+        'updated_by' => $adminUser->id,
+        'created_at' => now(),
+        'updated_at' => now()
       ]));
     }
   }

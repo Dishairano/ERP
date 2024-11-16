@@ -13,6 +13,9 @@ return new class extends Migration
       $table->string('name');
       $table->text('description')->nullable();
       $table->json('structure')->nullable();
+      $table->boolean('is_active')->default(true);
+      $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
+      $table->foreignId('updated_by')->nullable()->constrained('users')->nullOnDelete();
       $table->timestamps();
       $table->softDeletes();
     });

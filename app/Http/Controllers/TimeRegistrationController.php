@@ -3,260 +3,337 @@
 namespace App\Http\Controllers;
 
 use App\Models\TimeRegistrationModal;
+use App\Models\CoreProjectModal;
+use App\Models\CoreProjectTaskModal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
 class TimeRegistrationController extends Controller
 {
-  /**
-   * Display the time registration dashboard.
-   */
-  public function dashboard()
-  {
-    $user = Auth::user();
-    $today = Carbon::today();
+    /**
+     * Display the time registration dashboard.
+     */
+    public function dashboard()
+    {
+        $user = Auth::user();
+        $today = Carbon::today();
 
-    $weeklyRegistrations = TimeRegistrationModal::where('user_id', $user->id)
-      ->whereBetween('date', [
-        $today->copy()->startOfWeek(),
-        $today->copy()->endOfWeek()
-      ])
-      ->get();
+        // Today's hours
+        $todayHours = TimeRegistrationModal::where('user_id', $user->id)
+            ->whereDate('date', $today)
+            ->sum('hours');
 
-    $monthlyRegistrations = TimeRegistrationModal::where('user_id', $user->id)
-      ->whereBetween('date', [
-        $today->copy()->startOfMonth(),
-        $today->copy()->endOfMonth()
-      ])
-      ->get();
+        // Week's hours
+        $weekHours = TimeRegistrationModal::where('user_id', $user->id)
+            ->whereBetween('date', [
+                $today->copy()->startOfWeek(),
+                $today->copy()->endOfWeek()
+            ])
+            ->sum('hours');
 
-    $weeklyTotal = $weeklyRegistrations->sum('hours');
-    $monthlyTotal = $monthlyRegistrations->sum('hours');
+        // Month's hours
+        $monthHours = TimeRegistrationModal::where('user_id', $user->id)
+            ->whereBetween('date', [
+                $today->copy()->startOfMonth(),
+                $today->copy()->endOfMonth()
+            ])
+            ->sum('hours');
 
-    $recentRegistrations = TimeRegistrationModal::where('user_id', $user->id)
-      ->with(['project', 'task'])
-      ->orderBy('date', 'desc')
-      ->limit(5)
-      ->get();
+        // Pending approvals count - show all for managers/admins, only own for regular users
+        $pendingApprovals = TimeRegistrationModal::where('status', 'submitted')
+            ->where('user_id', $user->id) // For now, only show user's own pending approvals
+            ->count();
 
-    return view('time-registration.dashboard', compact(
-      'weeklyRegistrations',
-      'monthlyRegistrations',
-      'weeklyTotal',
-      'monthlyTotal',
-      'recentRegistrations'
-    ));
-  }
+        // Recent registrations
+        $recentRegistrations = TimeRegistrationModal::where('user_id', $user->id)
+            ->with(['project', 'task'])
+            ->orderBy('date', 'desc')
+            ->limit(5)
+            ->get();
 
-  /**
-   * Display a listing of time registrations.
-   */
-  public function index(Request $request)
-  {
-    $query = TimeRegistrationModal::query()
-      ->with(['project', 'task', 'user']);
-
-    // Filter by date range
-    if ($request->has('start_date') && $request->has('end_date')) {
-      $query->whereBetween('date', [
-        Carbon::parse($request->start_date),
-        Carbon::parse($request->end_date)
-      ]);
+        return view('content.time-registration.dashboard', compact(
+            'todayHours',
+            'weekHours',
+            'monthHours',
+            'pendingApprovals',
+            'recentRegistrations'
+        ));
     }
 
-    // Filter by project
-    if ($request->has('project_id')) {
-      $query->where('project_id', $request->project_id);
+    /**
+     * Display a listing of time registrations.
+     */
+    public function index(Request $request)
+    {
+        $query = TimeRegistrationModal::query()
+            ->with(['project', 'task', 'user']);
+
+        // Filter by date range
+        if ($request->has('start_date') && $request->has('end_date')) {
+            $query->whereBetween('date', [
+                Carbon::parse($request->start_date),
+                Carbon::parse($request->end_date)
+            ]);
+        }
+
+        // Filter by project
+        if ($request->has('project_id')) {
+            $query->where('project_id', $request->project_id);
+        }
+
+        // Filter by status
+        if ($request->has('status')) {
+            $query->where('status', $request->status);
+        }
+
+        $registrations = $query->orderBy('date', 'desc')
+            ->paginate(10);
+
+        return view('content.time-registration.index', compact('registrations'));
     }
 
-    // Filter by status
-    if ($request->has('status')) {
-      $query->where('status', $request->status);
+    /**
+     * Show the form for creating a new time registration.
+     */
+    public function create()
+    {
+        // Load active projects
+        $projects = CoreProjectModal::active()->get();
+
+        // Load tasks for all active projects
+        $tasks = CoreProjectTaskModal::whereIn('project_id', $projects->pluck('id'))
+            ->orderBy('title')
+            ->get()
+            ->map(function ($task) {
+                return [
+                    'id' => $task->id,
+                    'name' => $task->title // Map title to name for consistency in view
+                ];
+            });
+
+        return view('content.time-registration.create', compact('projects', 'tasks'));
     }
 
-    $registrations = $query->orderBy('date', 'desc')
-      ->paginate(10);
+    /**
+     * Get tasks for a specific project (API endpoint)
+     */
+    public function getProjectTasks($projectId)
+    {
+        $tasks = CoreProjectTaskModal::where('project_id', $projectId)
+            ->orderBy('title')
+            ->get()
+            ->map(function ($task) {
+                return [
+                    'id' => $task->id,
+                    'name' => $task->title
+                ];
+            });
 
-    return view('time-registration.index', compact('registrations'));
-  }
+        return response()->json($tasks);
+    }
 
-  /**
-   * Show the form for creating a new time registration.
-   */
-  public function create()
-  {
-    return view('time-registration.create');
-  }
+    /**
+     * Store a newly created time registration.
+     */
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'project_id' => 'required|exists:projects,id',
+            'task_id' => 'required|exists:project_tasks,id',
+            'date' => 'required|date',
+            'start_time' => 'required|date_format:H:i',
+            'end_time' => 'required|date_format:H:i|after:start_time',
+            'description' => 'required|string',
+            'billable' => 'boolean',
+            'overtime' => 'boolean',
+            'status' => 'required|string|in:draft,submitted,approved,rejected'
+        ]);
 
-  /**
-   * Store a newly created time registration.
-   */
-  public function store(Request $request)
-  {
-    $validated = $request->validate([
-      'project_id' => 'required|exists:projects,id',
-      'task_id' => 'required|exists:tasks,id',
-      'date' => 'required|date',
-      'hours' => 'required|numeric|min:0.25|max:24',
-      'description' => 'required|string',
-      'billable' => 'required|boolean',
-      'overtime' => 'required|boolean',
-      'status' => 'required|string|in:draft,submitted,approved,rejected'
-    ]);
+        $validated['user_id'] = Auth::id();
 
-    $validated['user_id'] = Auth::id();
+        // Convert time inputs to proper format
+        $validated['start_time'] = Carbon::parse($validated['date'] . ' ' . $validated['start_time'])->format('H:i:s');
+        $validated['end_time'] = Carbon::parse($validated['date'] . ' ' . $validated['end_time'])->format('H:i:s');
 
-    $registration = TimeRegistrationModal::create($validated);
+        // Set default values
+        $validated['billable'] = $validated['billable'] ?? false;
+        $validated['overtime'] = $validated['overtime'] ?? false;
 
-    return redirect()
-      ->route('time-registration.show', $registration)
-      ->with('success', 'Time registration created successfully');
-  }
+        // Create the registration
+        $registration = new TimeRegistrationModal($validated);
+        $registration->calculateHours();
+        $registration->save();
 
-  /**
-   * Display the specified time registration.
-   */
-  public function show(TimeRegistrationModal $registration)
-  {
-    $registration->load(['project', 'task', 'user']);
-    return view('time-registration.show', compact('registration'));
-  }
+        return redirect()
+            ->route('time-registration.show', $registration)
+            ->with('success', 'Time registration created successfully');
+    }
 
-  /**
-   * Show the form for editing the specified time registration.
-   */
-  public function edit(TimeRegistrationModal $registration)
-  {
-    return view('time-registration.edit', compact('registration'));
-  }
+    /**
+     * Display the specified time registration.
+     */
+    public function show(TimeRegistrationModal $timeRegistration)
+    {
+        $timeRegistration->load(['project', 'task', 'user']);
+        return view('content.time-registration.show', ['registration' => $timeRegistration]);
+    }
 
-  /**
-   * Update the specified time registration.
-   */
-  public function update(Request $request, TimeRegistrationModal $registration)
-  {
-    $validated = $request->validate([
-      'project_id' => 'sometimes|exists:projects,id',
-      'task_id' => 'sometimes|exists:tasks,id',
-      'date' => 'sometimes|date',
-      'hours' => 'sometimes|numeric|min:0.25|max:24',
-      'description' => 'sometimes|string',
-      'billable' => 'sometimes|boolean',
-      'overtime' => 'sometimes|boolean',
-      'status' => 'sometimes|string|in:draft,submitted,approved,rejected'
-    ]);
+    /**
+     * Show the form for editing the specified time registration.
+     */
+    public function edit(TimeRegistrationModal $timeRegistration)
+    {
+        $projects = CoreProjectModal::active()->get();
+        $tasks = CoreProjectTaskModal::where('project_id', $timeRegistration->project_id)->get();
 
-    $registration->update($validated);
+        return view('content.time-registration.edit', [
+            'registration' => $timeRegistration,
+            'projects' => $projects,
+            'tasks' => $tasks
+        ]);
+    }
 
-    return redirect()
-      ->route('time-registration.show', $registration)
-      ->with('success', 'Time registration updated successfully');
-  }
+    /**
+     * Update the specified time registration.
+     */
+    public function update(Request $request, TimeRegistrationModal $timeRegistration)
+    {
+        $validated = $request->validate([
+            'project_id' => 'sometimes|exists:projects,id',
+            'task_id' => 'sometimes|exists:project_tasks,id',
+            'date' => 'sometimes|date',
+            'start_time' => 'sometimes|date_format:H:i',
+            'end_time' => 'sometimes|date_format:H:i|after:start_time',
+            'description' => 'sometimes|string',
+            'billable' => 'boolean',
+            'overtime' => 'boolean',
+            'status' => 'sometimes|string|in:draft,submitted,approved,rejected'
+        ]);
 
-  /**
-   * Remove the specified time registration.
-   */
-  public function destroy(TimeRegistrationModal $registration)
-  {
-    $registration->delete();
+        if (isset($validated['start_time']) || isset($validated['end_time'])) {
+            $validated['start_time'] = Carbon::parse($validated['date'] . ' ' . $validated['start_time'])->format('H:i:s');
+            $validated['end_time'] = Carbon::parse($validated['date'] . ' ' . $validated['end_time'])->format('H:i:s');
 
-    return redirect()
-      ->route('time-registration.index')
-      ->with('success', 'Time registration deleted successfully');
-  }
+            $timeRegistration->fill($validated);
+            $timeRegistration->calculateHours();
+            $timeRegistration->save();
+        } else {
+            $timeRegistration->update($validated);
+        }
 
-  /**
-   * Display the calendar view.
-   */
-  public function calendar()
-  {
-    $user = Auth::user();
-    $registrations = TimeRegistrationModal::where('user_id', $user->id)
-      ->with(['project', 'task'])
-      ->get()
-      ->map(function ($registration) {
-        return [
-          'id' => $registration->id,
-          'title' => $registration->project->name . ' - ' . $registration->task->name,
-          'start' => $registration->date->format('Y-m-d'),
-          'hours' => $registration->hours,
-          'description' => $registration->description,
-          'status' => $registration->status,
-          'backgroundColor' => $this->getStatusColor($registration->status)
-        ];
-      });
+        return redirect()
+            ->route('time-registration.show', $timeRegistration)
+            ->with('success', 'Time registration updated successfully');
+    }
 
-    return view('time-registration.calendar', compact('registrations'));
-  }
+    /**
+     * Remove the specified time registration.
+     */
+    public function destroy(TimeRegistrationModal $timeRegistration)
+    {
+        $timeRegistration->delete();
 
-  /**
-   * Display the approvals page.
-   */
-  public function approvals()
-  {
-    $pendingApprovals = TimeRegistrationModal::where('status', 'submitted')
-      ->with(['project', 'task', 'user'])
-      ->orderBy('date', 'desc')
-      ->paginate(10);
+        return redirect()
+            ->route('time-registration.index')
+            ->with('success', 'Time registration deleted successfully');
+    }
 
-    return view('time-registration.approvals', compact('pendingApprovals'));
-  }
+    /**
+     * Display the calendar view.
+     */
+    public function calendar()
+    {
+        $user = Auth::user();
+        $registrations = TimeRegistrationModal::where('user_id', $user->id)
+            ->with(['project', 'task'])
+            ->get()
+            ->map(function ($registration) {
+                return [
+                    'id' => $registration->id,
+                    'title' => optional($registration->project)->name . ' - ' . optional($registration->task)->title,
+                    'start' => $registration->date->format('Y-m-d'),
+                    'hours' => $registration->hours,
+                    'description' => $registration->description,
+                    'status' => $registration->status,
+                    'backgroundColor' => $this->getStatusColor($registration->status)
+                ];
+            });
 
-  /**
-   * Approve a time registration.
-   */
-  public function approve(TimeRegistrationModal $registration)
-  {
-    $registration->update(['status' => 'approved']);
+        return view('content.time-registration.calendar', compact('registrations'));
+    }
 
-    return redirect()
-      ->route('time-registration.approvals')
-      ->with('success', 'Time registration approved successfully');
-  }
+    /**
+     * Display the approvals page.
+     */
+    public function approvals()
+    {
+        $user = Auth::user();
 
-  /**
-   * Reject a time registration.
-   */
-  public function reject(Request $request, TimeRegistrationModal $registration)
-  {
-    $validated = $request->validate([
-      'rejection_reason' => 'required|string'
-    ]);
+        // For now, users can only see their own submissions
+        $pendingApprovals = TimeRegistrationModal::where('status', 'submitted')
+            ->where('user_id', $user->id)
+            ->with(['project', 'task', 'user'])
+            ->orderBy('date', 'desc')
+            ->paginate(10);
 
-    $registration->update([
-      'status' => 'rejected',
-      'rejection_reason' => $validated['rejection_reason']
-    ]);
+        return view('content.time-registration.approvals', compact('pendingApprovals'));
+    }
 
-    return redirect()
-      ->route('time-registration.approvals')
-      ->with('success', 'Time registration rejected successfully');
-  }
+    /**
+     * Approve a time registration.
+     */
+    public function approve(TimeRegistrationModal $timeRegistration)
+    {
+        $timeRegistration->update(['status' => 'approved']);
 
-  /**
-   * Submit a time registration for approval.
-   */
-  public function submit(TimeRegistrationModal $registration)
-  {
-    $registration->update(['status' => 'submitted']);
+        return redirect()
+            ->route('time-registration.approvals')
+            ->with('success', 'Time registration approved successfully');
+    }
 
-    return redirect()
-      ->route('time-registration.show', $registration)
-      ->with('success', 'Time registration submitted for approval');
-  }
+    /**
+     * Reject a time registration.
+     */
+    public function reject(Request $request, TimeRegistrationModal $timeRegistration)
+    {
+        $validated = $request->validate([
+            'rejection_reason' => 'required|string'
+        ]);
 
-  /**
-   * Get the color for a given status.
-   */
-  private function getStatusColor(string $status): string
-  {
-    return match ($status) {
-      'draft' => '#6c757d',     // gray
-      'submitted' => '#ffc107',  // yellow
-      'approved' => '#28a745',   // green
-      'rejected' => '#dc3545',   // red
-      default => '#6c757d'
-    };
-  }
+        $timeRegistration->update([
+            'status' => 'rejected',
+            'rejection_reason' => $validated['rejection_reason']
+        ]);
+
+        return redirect()
+            ->route('time-registration.approvals')
+            ->with('success', 'Time registration rejected successfully');
+    }
+
+    /**
+     * Submit a time registration for approval.
+     */
+    public function submit(TimeRegistrationModal $timeRegistration)
+    {
+        $timeRegistration->update(['status' => 'submitted']);
+
+        return redirect()
+            ->route('time-registration.show', $timeRegistration)
+            ->with('success', 'Time registration submitted for approval');
+    }
+
+    /**
+     * Get the color for a given status.
+     */
+    private function getStatusColor(string $status): string
+    {
+        return match ($status) {
+            'draft' => '#6c757d',     // gray
+            'submitted' => '#ffc107',  // yellow
+            'approved' => '#28a745',   // green
+            'rejected' => '#dc3545',   // red
+            default => '#6c757d'
+        };
+    }
 }

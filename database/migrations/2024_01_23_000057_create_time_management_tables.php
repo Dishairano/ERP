@@ -19,6 +19,8 @@ return new class extends Migration
       $table->time('end_time');
       $table->decimal('hours', 5, 2);
       $table->text('description')->nullable();
+      $table->boolean('billable')->default(true);
+      $table->boolean('overtime')->default(false);
       $table->string('status')->default('pending'); // pending, approved, rejected
       $table->foreignId('approved_by')->nullable()->constrained('users')->nullOnDelete();
       $table->timestamp('approved_at')->nullable();

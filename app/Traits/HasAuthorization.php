@@ -2,62 +2,140 @@
 
 namespace App\Traits;
 
+use Illuminate\Support\Arr;
+
 trait HasAuthorization
 {
-  protected $cachedPermissions = null;
-
-  public function hasRole(string $role): bool
-  {
-    // For development purposes, consider user ID 1 as admin
-    if ($this->id === 1) {
-      return true;
+    /**
+     * Check if the user has a specific permission.
+     *
+     * @param string $permission
+     * @return bool
+     */
+    public function hasPermission(string $permission): bool
+    {
+        return in_array($permission, $this->getPermissions());
     }
 
-    // Add role check logic here
-    // For now, return true for basic roles
-    return in_array($role, ['employee']);
-  }
-
-  public function hasPermission(string $permission): bool
-  {
-    // Cache permissions to avoid multiple checks
-    if ($this->cachedPermissions === null) {
-      $this->cachedPermissions = $this->getPermissions();
+    /**
+     * Get all permissions for the user.
+     *
+     * @return array
+     */
+    public function getPermissions(): array
+    {
+        // For now, return all permissions for testing
+        // TODO: Implement proper permission retrieval from database
+        return [
+            'view_leave_requests',
+            'create_leave_requests',
+            'edit_leave_requests',
+            'delete_leave_requests',
+            'approve_leave_requests',
+            'view_leave_types',
+            'create_leave_types',
+            'edit_leave_types',
+            'delete_leave_types',
+            'view_all_leave_requests'
+        ];
     }
 
-    // For development purposes, consider user ID 1 as having all permissions
-    if ($this->id === 1) {
-      return true;
+    /**
+     * Check if the user has any of the given permissions.
+     *
+     * @param array|string $permissions
+     * @return bool
+     */
+    public function hasAnyPermission($permissions): bool
+    {
+        $permissions = Arr::wrap($permissions);
+
+        foreach ($permissions as $permission) {
+            if ($this->hasPermission($permission)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
-    return in_array($permission, $this->cachedPermissions);
-  }
+    /**
+     * Check if the user has all of the given permissions.
+     *
+     * @param array|string $permissions
+     * @return bool
+     */
+    public function hasAllPermissions($permissions): bool
+    {
+        $permissions = Arr::wrap($permissions);
 
-  protected function getPermissions(): array
-  {
-    // This method should be implemented to fetch permissions from the database
-    // For now, return a basic set of permissions
-    return [
-      'view_dashboard',
-      'manage_users',
-      'view_users',
-      'manage_roles',
-      'view_roles',
-      'manage_settings',
-      'view_settings',
-      'manage_projects',
-      'view_projects',
-      'manage_tasks',
-      'view_tasks',
-      'manage_risks',
-      'view_risks',
-      'view_audit_logs',
-      'export_audit_logs',
-      'manage_leave_requests',
-      'view_reports',
-      'export_reports',
-      'manage_schedules',
-      'manage_time_registrations'
-    ];
-  }
+        foreach ($permissions as $permission) {
+            if (!$this->hasPermission($permission)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Get the role names for the user.
+     *
+     * @return array
+     */
+    public function getRoles(): array
+    {
+        // For now, return basic roles for testing
+        // TODO: Implement proper role retrieval from database
+        return ['user'];
+    }
+
+    /**
+     * Check if the user has a specific role.
+     *
+     * @param string $role
+     * @return bool
+     */
+    public function hasRole(string $role): bool
+    {
+        return in_array($role, $this->getRoles());
+    }
+
+    /**
+     * Check if the user has any of the given roles.
+     *
+     * @param array|string $roles
+     * @return bool
+     */
+    public function hasAnyRole($roles): bool
+    {
+        $roles = Arr::wrap($roles);
+
+        foreach ($roles as $role) {
+            if ($this->hasRole($role)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Check if the user has all of the given roles.
+     *
+     * @param array|string $roles
+     * @return bool
+     */
+    public function hasAllRoles($roles): bool
+    {
+        $roles = Arr::wrap($roles);
+
+        foreach ($roles as $role) {
+            if (!$this->hasRole($role)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

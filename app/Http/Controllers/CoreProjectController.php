@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\CoreProjectModal;
 use App\Models\CoreProjectTaskModal;
 use App\Models\CoreProjectRiskModal;
-use App\Models\CoreProjectDashboardModal;
 use App\Models\CoreProjectTemplateModal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -14,19 +13,19 @@ class CoreProjectController extends Controller
 {
   public function dashboard()
   {
-    $projects = CoreProjectDashboardModal::with(['project', 'tasks'])
+    $projects = CoreProjectModal::with(['tasks'])
       ->get()
-      ->map(function ($dashboard) {
+      ->map(function ($project) {
         return [
-          'name' => $dashboard->project->name,
-          'progress' => $dashboard->progress_percentage,
-          'tasks_completed' => $dashboard->completed_tasks,
-          'tasks_total' => $dashboard->total_tasks,
-          'budget_spent' => $dashboard->budget_spent,
-          'budget_total' => $dashboard->budget_allocated,
-          'status' => $dashboard->status,
-          'priority' => $dashboard->priority,
-          'upcoming_milestones' => $dashboard->upcoming_milestones
+          'id' => $project->id,
+          'name' => $project->name,
+          'progress' => $project->progress,
+          'tasks_completed' => $project->tasks->where('status', 'completed')->count(),
+          'tasks_total' => $project->tasks->count(),
+          'budget_spent' => $project->budget_spent,
+          'budget_total' => $project->budget,
+          'status' => $project->status,
+          'priority' => $project->priority
         ];
       });
 
@@ -77,15 +76,17 @@ class CoreProjectController extends Controller
 
   public function performance()
   {
-    $projectPerformance = CoreProjectDashboardModal::with('project')
+    $projectPerformance = CoreProjectModal::with('tasks')
       ->get()
-      ->map(function ($dashboard) {
+      ->map(function ($project) {
         return [
-          'name' => $dashboard->project->name,
-          'progress' => $dashboard->progress_percentage,
-          'budget_performance' => ($dashboard->budget_spent / $dashboard->budget_allocated) * 100,
-          'schedule_performance' => $this->calculateSchedulePerformance($dashboard),
-          'task_completion_rate' => ($dashboard->completed_tasks / max($dashboard->total_tasks, 1)) * 100
+          'name' => $project->name,
+          'progress' => $project->progress,
+          'budget_performance' => $project->budget > 0 ? ($project->budget_spent / $project->budget) * 100 : 0,
+          'schedule_performance' => $this->calculateSchedulePerformance($project),
+          'task_completion_rate' => $project->tasks->count() > 0
+            ? ($project->tasks->where('status', 'completed')->count() / $project->tasks->count()) * 100
+            : 0
         ];
       });
 
@@ -148,10 +149,17 @@ class CoreProjectController extends Controller
     return view('content.projects.risks.report', compact('risks', 'riskTrends', 'risksByImpact'));
   }
 
-  private function calculateSchedulePerformance($dashboard)
+  private function calculateSchedulePerformance($project)
   {
-    $plannedProgress = $dashboard->project->planned_progress_percentage ?? 0;
-    $actualProgress = $dashboard->progress_percentage;
+    $totalDuration = $project->end_date->diffInDays($project->start_date);
+    $elapsedDuration = now()->diffInDays($project->start_date);
+
+    if ($totalDuration == 0) {
+      return 100;
+    }
+
+    $plannedProgress = ($elapsedDuration / $totalDuration) * 100;
+    $actualProgress = $project->progress;
 
     if ($plannedProgress == 0) {
       return 100;

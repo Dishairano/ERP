@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CoreFinanceBudgetModal;
 use App\Models\CoreFinanceDepartmentModal;
-use App\Models\CoreProjectDashboardModal;
+use App\Models\CoreProjectModal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
@@ -44,7 +44,7 @@ class CoreFinanceBudgetController extends Controller
       ->paginate(10);
 
     $departments = CoreFinanceDepartmentModal::active()->get();
-    $projects = CoreProjectDashboardModal::active()->get();
+    $projects = CoreProjectModal::where('status', '!=', 'completed')->get();
 
     return view('core.finance.budgets.index', compact('budgets', 'departments', 'projects'));
   }
@@ -55,7 +55,7 @@ class CoreFinanceBudgetController extends Controller
   public function create()
   {
     $departments = CoreFinanceDepartmentModal::active()->get();
-    $projects = CoreProjectDashboardModal::active()->get();
+    $projects = CoreProjectModal::where('status', '!=', 'completed')->get();
 
     return view('core.finance.budgets.create', compact('departments', 'projects'));
   }
@@ -73,7 +73,7 @@ class CoreFinanceBudgetController extends Controller
       'end_date' => 'required|date|after:start_date',
       'total_amount' => 'required|numeric|min:0',
       'department_id' => 'nullable|exists:finance_departments,id',
-      'project_id' => 'nullable|exists:project_dashboards,id',
+      'project_id' => 'nullable|exists:projects,id',
       'status' => 'required|string|in:draft,active,closed',
       'notes' => 'nullable|string'
     ]);
@@ -118,7 +118,7 @@ class CoreFinanceBudgetController extends Controller
   public function edit(CoreFinanceBudgetModal $budget)
   {
     $departments = CoreFinanceDepartmentModal::active()->get();
-    $projects = CoreProjectDashboardModal::active()->get();
+    $projects = CoreProjectModal::where('status', '!=', 'completed')->get();
 
     return view('core.finance.budgets.edit', compact('budget', 'departments', 'projects'));
   }
@@ -136,7 +136,7 @@ class CoreFinanceBudgetController extends Controller
       'end_date' => 'required|date|after:start_date',
       'total_amount' => 'required|numeric|min:0',
       'department_id' => 'nullable|exists:finance_departments,id',
-      'project_id' => 'nullable|exists:project_dashboards,id',
+      'project_id' => 'nullable|exists:projects,id',
       'status' => 'required|string|in:draft,active,closed',
       'notes' => 'nullable|string'
     ]);
@@ -237,7 +237,7 @@ class CoreFinanceBudgetController extends Controller
       ->orderBy('created_at', 'desc')
       ->paginate(10);
 
-    $projects = CoreProjectDashboardModal::active()->get();
+    $projects = CoreProjectModal::where('status', '!=', 'completed')->get();
 
     return view('core.finance.budgets.projects', compact('budgets', 'projects'));
   }

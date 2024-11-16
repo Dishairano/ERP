@@ -2,88 +2,146 @@
 
 namespace Database\Seeders;
 
+use App\Models\Permission;
+use App\Models\Role;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
 class SettingsPermissionsSeeder extends Seeder
 {
-  public function run()
-  {
-    $permissions = [
-      // General Settings
-      ['name' => 'view_general_settings', 'guard_name' => 'web'],
-      ['name' => 'edit_general_settings', 'guard_name' => 'web'],
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
+    {
+        $permissions = [
+            [
+                'name' => 'View General Settings',
+                'slug' => 'view_general_settings',
+                'description' => 'Can view general settings'
+            ],
+            [
+                'name' => 'Edit General Settings',
+                'slug' => 'edit_general_settings',
+                'description' => 'Can edit general settings'
+            ],
+            [
+                'name' => 'View Security Settings',
+                'slug' => 'view_security_settings',
+                'description' => 'Can view security settings'
+            ],
+            [
+                'name' => 'Edit Security Settings',
+                'slug' => 'edit_security_settings',
+                'description' => 'Can edit security settings'
+            ],
+            [
+                'name' => 'View Localization Settings',
+                'slug' => 'view_localization_settings',
+                'description' => 'Can view localization settings'
+            ],
+            [
+                'name' => 'Edit Localization Settings',
+                'slug' => 'edit_localization_settings',
+                'description' => 'Can edit localization settings'
+            ],
+            [
+                'name' => 'View Email Settings',
+                'slug' => 'view_email_settings',
+                'description' => 'Can view email settings'
+            ],
+            [
+                'name' => 'Edit Email Settings',
+                'slug' => 'edit_email_settings',
+                'description' => 'Can edit email settings'
+            ],
+            [
+                'name' => 'View Workflow Settings',
+                'slug' => 'view_workflow_settings',
+                'description' => 'Can view workflow settings'
+            ],
+            [
+                'name' => 'Edit Workflow Settings',
+                'slug' => 'edit_workflow_settings',
+                'description' => 'Can edit workflow settings'
+            ],
+            [
+                'name' => 'View API Settings',
+                'slug' => 'view_api_settings',
+                'description' => 'Can view API settings'
+            ],
+            [
+                'name' => 'Edit API Settings',
+                'slug' => 'edit_api_settings',
+                'description' => 'Can edit API settings'
+            ]
+        ];
 
-      // Company Profile
-      ['name' => 'view_company_profile', 'guard_name' => 'web'],
-      ['name' => 'edit_company_profile', 'guard_name' => 'web'],
+        // Create permissions
+        foreach ($permissions as $permission) {
+            Permission::updateOrCreate(
+                ['slug' => $permission['slug']],
+                $permission
+            );
+        }
 
-      // Notifications
-      ['name' => 'view_notification_settings', 'guard_name' => 'web'],
-      ['name' => 'edit_notification_settings', 'guard_name' => 'web'],
+        // Get roles
+        $adminRole = Role::where('slug', 'admin')->first();
+        $managerRole = Role::where('slug', 'manager')->first();
 
-      // Integrations
-      ['name' => 'view_integrations', 'guard_name' => 'web'],
-      ['name' => 'edit_integrations', 'guard_name' => 'web'],
+        // Assign permissions to roles using role_permission table
+        if ($adminRole) {
+            $adminPermissions = Permission::whereIn('slug', [
+                'view_general_settings',
+                'edit_general_settings',
+                'view_security_settings',
+                'edit_security_settings',
+                'view_localization_settings',
+                'edit_localization_settings',
+                'view_email_settings',
+                'edit_email_settings',
+                'view_workflow_settings',
+                'edit_workflow_settings',
+                'view_api_settings',
+                'edit_api_settings'
+            ])->get();
 
-      // Backup & Recovery
-      ['name' => 'view_backup_settings', 'guard_name' => 'web'],
-      ['name' => 'create_backup', 'guard_name' => 'web'],
-      ['name' => 'restore_backup', 'guard_name' => 'web'],
+            foreach ($adminPermissions as $permission) {
+                DB::table('role_permission')->updateOrInsert(
+                    [
+                        'role_id' => $adminRole->id,
+                        'permission_id' => $permission->id
+                    ],
+                    [
+                        'created_at' => now(),
+                        'updated_at' => now()
+                    ]
+                );
+            }
+        }
 
-      // Roles & Permissions
-      ['name' => 'view_roles', 'guard_name' => 'web'],
-      ['name' => 'create_roles', 'guard_name' => 'web'],
-      ['name' => 'edit_roles', 'guard_name' => 'web'],
-      ['name' => 'delete_roles', 'guard_name' => 'web'],
+        if ($managerRole) {
+            $managerPermissions = Permission::whereIn('slug', [
+                'view_general_settings',
+                'view_security_settings',
+                'view_localization_settings',
+                'view_email_settings',
+                'view_workflow_settings',
+                'view_api_settings'
+            ])->get();
 
-      // User Management
-      ['name' => 'view_users', 'guard_name' => 'web'],
-      ['name' => 'create_users', 'guard_name' => 'web'],
-      ['name' => 'edit_users', 'guard_name' => 'web'],
-      ['name' => 'delete_users', 'guard_name' => 'web'],
-
-      // Audit Log
-      ['name' => 'view_audit_log', 'guard_name' => 'web'],
-      ['name' => 'export_audit_log', 'guard_name' => 'web'],
-
-      // Security Settings
-      ['name' => 'view_security_settings', 'guard_name' => 'web'],
-      ['name' => 'edit_security_settings', 'guard_name' => 'web'],
-
-      // Localization
-      ['name' => 'view_localization_settings', 'guard_name' => 'web'],
-      ['name' => 'edit_localization_settings', 'guard_name' => 'web'],
-
-      // Email Configuration
-      ['name' => 'view_email_settings', 'guard_name' => 'web'],
-      ['name' => 'edit_email_settings', 'guard_name' => 'web'],
-      ['name' => 'test_email_settings', 'guard_name' => 'web'],
-
-      // Workflow Settings
-      ['name' => 'view_workflow_settings', 'guard_name' => 'web'],
-      ['name' => 'edit_workflow_settings', 'guard_name' => 'web'],
-
-      // API Settings
-      ['name' => 'view_api_settings', 'guard_name' => 'web'],
-      ['name' => 'edit_api_settings', 'guard_name' => 'web'],
-      ['name' => 'generate_api_key', 'guard_name' => 'web'],
-    ];
-
-    foreach ($permissions as $permission) {
-      DB::table('permissions')->insertOrIgnore($permission);
+            foreach ($managerPermissions as $permission) {
+                DB::table('role_permission')->updateOrInsert(
+                    [
+                        'role_id' => $managerRole->id,
+                        'permission_id' => $permission->id
+                    ],
+                    [
+                        'created_at' => now(),
+                        'updated_at' => now()
+                    ]
+                );
+            }
+        }
     }
-
-    // Assign all permissions to admin role
-    $adminRoleId = DB::table('roles')->where('name', 'admin')->value('id');
-    if ($adminRoleId) {
-      $permissionIds = DB::table('permissions')->pluck('id');
-      foreach ($permissionIds as $permissionId) {
-        DB::table('role_has_permissions')->insertOrIgnore([
-          'role_id' => $adminRoleId,
-          'permission_id' => $permissionId
-        ]);
-      }
-    }
-  }
 }

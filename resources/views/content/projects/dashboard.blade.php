@@ -92,8 +92,8 @@
                 <div class="card shadow mb-4">
                     <div class="card-header py-3 d-flex justify-content-between align-items-center">
                         <h6 class="m-0 font-weight-bold text-primary">Active Projects</h6>
-                        <a href="{{ route('projects.tasks.create') }}" class="btn btn-primary btn-sm">
-                            <i class="fas fa-plus"></i> New Task
+                        <a href="{{ route('projects.index') }}" class="btn btn-primary btn-sm">
+                            <i class="fas fa-list"></i> View Projects
                         </a>
                     </div>
                     <div class="card-body">
@@ -107,40 +107,52 @@
                                         <th>Budget</th>
                                         <th>Status</th>
                                         <th>Priority</th>
+                                        <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($projects as $project)
                                         <tr>
-                                            <td>{{ $project['name'] }}</td>
+                                            <td>{{ is_array($project) ? $project['name'] ?? '' : optional($project)->name }}</td>
                                             <td>
                                                 <div class="progress progress-sm">
                                                     <div class="progress-bar bg-info" role="progressbar"
-                                                        style="width: {{ $project['progress'] }}%">
-                                                        {{ $project['progress'] }}%
+                                                        style="width: {{ is_array($project) ? $project['progress'] ?? 0 : optional($project)->progress ?? 0 }}%">
+                                                        {{ is_array($project) ? $project['progress'] ?? 0 : optional($project)->progress ?? 0 }}%
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td>{{ $project['tasks_completed'] }}/{{ $project['tasks_total'] }}</td>
-                                            <td>${{ number_format($project['budget_spent']) }} /
-                                                ${{ number_format($project['budget_total']) }}</td>
+                                            <td>{{ is_array($project) ? ($project['tasks_completed'] ?? 0) : optional($project)->tasks_completed ?? 0 }}/{{ is_array($project) ? ($project['tasks_total'] ?? 0) : optional($project)->tasks_total ?? 0 }}</td>
+                                            <td>${{ number_format(is_array($project) ? ($project['budget_spent'] ?? 0) : optional($project)->budget_spent ?? 0) }} /
+                                                ${{ number_format(is_array($project) ? ($project['budget_total'] ?? 0) : optional($project)->budget_total ?? 0) }}</td>
                                             <td>
+                                                @php
+                                                    $status = is_array($project) ? ($project['status'] ?? '') : optional($project)->status;
+                                                @endphp
                                                 <span
-                                                    class="badge badge-{{ $project['status'] === 'completed'
+                                                    class="badge badge-{{ $status === 'completed'
                                                         ? 'success'
-                                                        : ($project['status'] === 'active'
+                                                        : ($status === 'active'
                                                             ? 'primary'
-                                                            : ($project['status'] === 'pending'
+                                                            : ($status === 'pending'
                                                                 ? 'warning'
                                                                 : 'danger')) }}">
-                                                    {{ ucfirst($project['status']) }}
+                                                    {{ ucfirst($status) }}
                                                 </span>
                                             </td>
                                             <td>
+                                                @php
+                                                    $priority = is_array($project) ? ($project['priority'] ?? '') : optional($project)->priority;
+                                                @endphp
                                                 <span
-                                                    class="badge badge-{{ $project['priority'] === 'high' ? 'danger' : ($project['priority'] === 'medium' ? 'warning' : 'info') }}">
-                                                    {{ ucfirst($project['priority']) }}
+                                                    class="badge badge-{{ $priority === 'high' ? 'danger' : ($priority === 'medium' ? 'warning' : 'info') }}">
+                                                    {{ ucfirst($priority) }}
                                                 </span>
+                                            </td>
+                                            <td>
+                                                <a href="{{ route('projects.tasks.create', is_array($project) ? ($project['id'] ?? 0) : optional($project)->id) }}" class="btn btn-sm btn-primary">
+                                                    <i class="fas fa-plus"></i> New Task
+                                                </a>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -173,13 +185,13 @@
                                 <tbody>
                                     @foreach ($upcomingDeadlines as $task)
                                         <tr>
-                                            <td>{{ $task->title }}</td>
-                                            <td>{{ $task->project->name }}</td>
-                                            <td>{{ $task->due_date->format('M d, Y') }}</td>
+                                            <td>{{ optional($task)->title }}</td>
+                                            <td>{{ optional($task->project)->name }}</td>
+                                            <td>{{ optional($task->due_date)->format('M d, Y') }}</td>
                                             <td>
                                                 <span
-                                                    class="badge badge-{{ $task->status === 'completed' ? 'success' : ($task->status === 'in_progress' ? 'primary' : 'warning') }}">
-                                                    {{ ucfirst($task->status) }}
+                                                    class="badge badge-{{ optional($task)->status === 'completed' ? 'success' : (optional($task)->status === 'in_progress' ? 'primary' : 'warning') }}">
+                                                    {{ ucfirst(optional($task)->status) }}
                                                 </span>
                                             </td>
                                         </tr>

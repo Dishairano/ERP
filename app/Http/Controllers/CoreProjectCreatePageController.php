@@ -40,17 +40,6 @@ class CoreProjectCreatePageController extends Controller
 
     $project = CoreProjectModal::create($validated);
 
-    // Create default project dashboard
-    $project->dashboard()->create([
-      'layout' => 'default',
-      'widgets' => [
-        'tasks_overview' => true,
-        'budget_status' => true,
-        'team_members' => true,
-        'recent_activities' => true
-      ]
-    ]);
-
     return redirect()
       ->route('projects.show', $project)
       ->with('success', 'Project created successfully.');

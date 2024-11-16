@@ -3,14 +3,31 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TimeRegistrationController;
 
-// Time Registration Routes
-Route::prefix('time-registration')->group(function () {
-  Route::get('/dashboard', [TimeRegistrationController::class, 'dashboard'])->name('time-registration.dashboard');
-  Route::get('/', [TimeRegistrationController::class, 'index'])->name('time-registration.index');
-  Route::get('/create', [TimeRegistrationController::class, 'create'])->name('time-registration.create');
-  Route::post('/', [TimeRegistrationController::class, 'store'])->name('time-registration.store');
-  Route::get('/calendar', [TimeRegistrationController::class, 'calendar'])->name('time-registration.calendar');
-  Route::get('/approvals', [TimeRegistrationController::class, 'approvals'])->name('time-registration.approvals');
-  Route::post('/{registration}/status', [TimeRegistrationController::class, 'updateStatus'])->name('time-registration.update-status');
-  Route::get('/export', [TimeRegistrationController::class, 'export'])->name('time-registration.export');
+Route::middleware(['web', 'auth'])->group(function () {
+    // Time Registration Dashboard
+    Route::get('/time-registration/dashboard', [TimeRegistrationController::class, 'dashboard'])
+        ->name('time-registration.dashboard');
+
+    // Time Registration Calendar View
+    Route::get('/time-registration/calendar', [TimeRegistrationController::class, 'calendar'])
+        ->name('time-registration.calendar');
+
+    // Time Registration Approvals
+    Route::get('/time-registration/approvals', [TimeRegistrationController::class, 'approvals'])
+        ->name('time-registration.approvals');
+
+    // Time Registration CRUD Routes
+    Route::resource('time-registration', TimeRegistrationController::class);
+
+    // Additional Time Registration Actions
+    Route::post('/time-registration/{registration}/submit', [TimeRegistrationController::class, 'submit'])
+        ->name('time-registration.submit');
+    Route::post('/time-registration/{registration}/approve', [TimeRegistrationController::class, 'approve'])
+        ->name('time-registration.approve');
+    Route::post('/time-registration/{registration}/reject', [TimeRegistrationController::class, 'reject'])
+        ->name('time-registration.reject');
+
+    // API Routes for Dynamic Data
+    Route::get('/api/projects/{project}/tasks', [TimeRegistrationController::class, 'getProjectTasks'])
+        ->name('api.project.tasks');
 });

@@ -1,21 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CoreProjectDashboardController;
 use App\Http\Controllers\CoreProjectTaskController;
 use App\Http\Controllers\CoreProjectRiskController;
 use App\Http\Controllers\CoreProjectTemplateController;
 use App\Http\Controllers\CoreSettingsController;
 
 Route::middleware(['auth'])->group(function () {
-  // Project Dashboard Routes
+  // Project Routes
   Route::prefix('projects')->group(function () {
-    Route::get('/dashboard', [CoreProjectDashboardController::class, 'index'])->name('projects.dashboard');
-    Route::get('/dashboard/{project}', [CoreProjectDashboardController::class, 'show'])->name('projects.dashboard.show');
-    Route::post('/dashboard/{project}/refresh', [CoreProjectDashboardController::class, 'refreshMetrics'])->name('projects.dashboard.refresh');
-    Route::get('/dashboard/{project}/timeline', [CoreProjectDashboardController::class, 'getProjectTimeline'])->name('projects.dashboard.timeline');
-    Route::get('/dashboard/{project}/team-performance', [CoreProjectDashboardController::class, 'getTeamPerformance'])->name('projects.dashboard.team-performance');
-
     // Project Tasks Routes (Nested under specific project)
     Route::prefix('{project}/tasks')->group(function () {
       Route::get('/', [CoreProjectTaskController::class, 'index'])->name('projects.tasks.index');

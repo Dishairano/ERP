@@ -1,0 +1,41 @@
+{
+  "menu": [
+    {
+      "url": "/leave-requests/dashboard",
+      "name": "Leave Requests",
+      "icon": "ri-calendar-event-line",
+      "slug": "leave-requests.dashboard",
+      "permission": "view_leave_requests",
+      "submenu": [
+        {
+          "url": "/leave-requests",
+          "name": "All Requests",
+          "icon": "ri-list-check",
+          "slug": "leave-requests.index",
+          "permission": "view_leave_requests"
+        },
+        {
+          "url": "/leave-requests/calendar",
+          "name": "Calendar",
+          "icon": "ri-calendar-line",
+          "slug": "leave-requests.calendar",
+          "permission": "view_leave_requests"
+        },
+        {
+          "url": "/leave-requests/create",
+          "name": "New Request",
+          "icon": "ri-add-line",
+          "slug": "leave-requests.create",
+          "permission": "create_leave_requests"
+        },
+        {
+          "url": "/leave-types",
+          "name": "Leave Types",
+          "icon": "ri-settings-3-line",
+          "slug": "leave-types.index",
+          "permission": "view_leave_types"
+        }
+      ]
+    }
+  ]
+}

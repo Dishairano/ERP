@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\Department;
+use App\Models\CoreHrmDepartmentModal;
 
 class DepartmentSeeder extends Seeder
 {
@@ -13,32 +13,42 @@ class DepartmentSeeder extends Seeder
       [
         'name' => 'Finance',
         'code' => 'FIN',
-        'description' => 'Financial department'
+        'description' => 'Financial department',
+        'level' => 0,
+        'is_active' => true
       ],
       [
         'name' => 'Human Resources',
         'code' => 'HR',
-        'description' => 'Human Resources department'
+        'description' => 'Human Resources department',
+        'level' => 0,
+        'is_active' => true
       ],
       [
         'name' => 'Information Technology',
         'code' => 'IT',
-        'description' => 'IT department'
+        'description' => 'IT department',
+        'level' => 0,
+        'is_active' => true
       ],
       [
         'name' => 'Operations',
         'code' => 'OPS',
-        'description' => 'Operations department'
+        'description' => 'Operations department',
+        'level' => 0,
+        'is_active' => true
       ],
       [
         'name' => 'Marketing',
         'code' => 'MKT',
-        'description' => 'Marketing department'
+        'description' => 'Marketing department',
+        'level' => 0,
+        'is_active' => true
       ]
     ];
 
     foreach ($departments as $department) {
-      Department::create($department);
+      CoreHrmDepartmentModal::create($department);
     }
   }
 }

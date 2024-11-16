@@ -2,50 +2,48 @@
 
 namespace App\Providers;
 
+use App\Models\LeaveRequest;
+use App\Models\WorkShift;
+use App\Policies\LeaveRequestPolicy;
+use App\Policies\WorkShiftPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
-use App\Models\User;
 
 class AuthServiceProvider extends ServiceProvider
 {
-  protected $policies = [
-    // Define your model policies here
-  ];
-
-  public function boot()
-  {
-    $this->registerPolicies();
-
-    // Register permissions
-    $permissions = [
-      'manage_leave_requests',
-      'view_reports',
-      'export_reports',
-      'manage_schedules',
-      'manage_users',
-      'manage_roles',
-      'manage_settings',
-      'view_audit_logs',
-      'export_audit_logs'
+    /**
+     * The model to policy mappings for the application.
+     *
+     * @var array<class-string, class-string>
+     */
+    protected $policies = [
+        LeaveRequest::class => LeaveRequestPolicy::class,
+        WorkShift::class => WorkShiftPolicy::class,
     ];
 
-    foreach ($permissions as $permission) {
-      Gate::define($permission, function (User $user) use ($permission) {
-        return $user->hasPermission($permission);
-      });
+    /**
+     * Register any authentication / authorization services.
+     */
+    public function boot(): void
+    {
+        $this->registerPolicies();
+
+        // Define gates for leave management
+        Gate::define('view-leave-requests', [LeaveRequestPolicy::class, 'viewAny']);
+        Gate::define('create-leave-requests', [LeaveRequestPolicy::class, 'create']);
+        Gate::define('approve-leave-requests', [LeaveRequestPolicy::class, 'approve']);
+        Gate::define('view-leave-balances', [LeaveRequestPolicy::class, 'viewBalances']);
+        Gate::define('view-all-leave-balances', [LeaveRequestPolicy::class, 'viewAllBalances']);
+
+        // Define gates for shift management
+        Gate::define('view-shifts', [WorkShiftPolicy::class, 'viewAny']);
+        Gate::define('create-shifts', [WorkShiftPolicy::class, 'create']);
+        Gate::define('edit-shifts', [WorkShiftPolicy::class, 'update']);
+        Gate::define('delete-shifts', [WorkShiftPolicy::class, 'delete']);
+        Gate::define('manage-shifts', [WorkShiftPolicy::class, 'manageAll']);
+        Gate::define('view-all-shifts', [WorkShiftPolicy::class, 'viewAll']);
+        Gate::define('start-shift', [WorkShiftPolicy::class, 'start']);
+        Gate::define('complete-shift', [WorkShiftPolicy::class, 'complete']);
+        Gate::define('cancel-shift', [WorkShiftPolicy::class, 'cancel']);
     }
-
-    // Define roles
-    Gate::define('isAdmin', function (User $user) {
-      return $user->hasRole('admin');
-    });
-
-    Gate::define('isManager', function (User $user) {
-      return $user->hasRole('manager');
-    });
-
-    Gate::define('isEmployee', function (User $user) {
-      return $user->hasRole('employee');
-    });
-  }
 }

@@ -2,192 +2,115 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Foundation\Auth\User;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class CoreFinanceBudgetModal extends Model
 {
-  use HasFactory;
+    use SoftDeletes;
 
-  protected $table = 'finance_budgets';
+    protected $table = 'finance_budgets';
 
-  protected $fillable = [
-    'name',
-    'description',
-    'fiscal_year',
-    'start_date',
-    'end_date',
-    'total_amount',
-    'allocated_amount',
-    'remaining_amount',
-    'status',
-    'department_id',
-    'project_id',
-    'created_by',
-    'approved_by',
-    'approved_at',
-    'notes'
-  ];
+    protected $fillable = [
+        'name',
+        'description',
+        'fiscal_year',
+        'start_date',
+        'end_date',
+        'total_amount',
+        'allocated_amount',
+        'remaining_amount',
+        'department_id',
+        'project_id',
+        'status',
+        'notes',
+        'created_by',
+        'approved_by'
+    ];
 
-  protected $casts = [
-    'start_date' => 'date',
-    'end_date' => 'date',
-    'total_amount' => 'decimal:2',
-    'allocated_amount' => 'decimal:2',
-    'remaining_amount' => 'decimal:2',
-    'approved_at' => 'datetime',
-    'created_at' => 'datetime',
-    'updated_at' => 'datetime'
-  ];
+    protected $casts = [
+        'start_date' => 'datetime',
+        'end_date' => 'datetime',
+        'total_amount' => 'decimal:2',
+        'allocated_amount' => 'decimal:2',
+        'remaining_amount' => 'decimal:2'
+    ];
 
-  /**
-   * Get the user who created the budget.
-   */
-  public function creator(): BelongsTo
-  {
-    return $this->belongsTo(User::class, 'created_by');
-  }
-
-  /**
-   * Get the user who approved the budget.
-   */
-  public function approver(): BelongsTo
-  {
-    return $this->belongsTo(User::class, 'approved_by');
-  }
-
-  /**
-   * Get the department that owns the budget.
-   */
-  public function department(): BelongsTo
-  {
-    return $this->belongsTo(CoreFinanceDepartmentModal::class, 'department_id');
-  }
-
-  /**
-   * Get the project that owns the budget.
-   */
-  public function project(): BelongsTo
-  {
-    return $this->belongsTo(CoreProjectDashboardModal::class, 'project_id');
-  }
-
-  /**
-   * Get the line items for the budget.
-   */
-  public function lineItems(): HasMany
-  {
-    return $this->hasMany(CoreFinanceBudgetLineItemModal::class, 'budget_id');
-  }
-
-  /**
-   * Get the scenarios for the budget.
-   */
-  public function scenarios(): HasMany
-  {
-    return $this->hasMany(CoreFinanceBudgetScenarioModal::class, 'budget_id');
-  }
-
-  /**
-   * Check if the budget is approved.
-   */
-  public function isApproved(): bool
-  {
-    return !is_null($this->approved_at);
-  }
-
-  /**
-   * Check if the budget is active.
-   */
-  public function isActive(): bool
-  {
-    return $this->status === 'active';
-  }
-
-  /**
-   * Check if the budget is closed.
-   */
-  public function isClosed(): bool
-  {
-    return $this->status === 'closed';
-  }
-
-  /**
-   * Check if the budget is over allocated.
-   */
-  public function isOverAllocated(): bool
-  {
-    return $this->allocated_amount > $this->total_amount;
-  }
-
-  /**
-   * Get the budget utilization percentage.
-   */
-  public function getUtilizationPercentage(): float
-  {
-    if ($this->total_amount <= 0) {
-      return 0;
+    public function department()
+    {
+        return $this->belongsTo(CoreFinanceDepartmentModal::class, 'department_id');
     }
 
-    return ($this->allocated_amount / $this->total_amount) * 100;
-  }
+    public function project()
+    {
+        return $this->belongsTo(CoreProjectModal::class, 'project_id');
+    }
 
-  /**
-   * Format the total amount as currency.
-   */
-  public function getFormattedTotalAmount(): string
-  {
-    return number_format($this->total_amount, 2);
-  }
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
 
-  /**
-   * Format the allocated amount as currency.
-   */
-  public function getFormattedAllocatedAmount(): string
-  {
-    return number_format($this->allocated_amount, 2);
-  }
+    public function approver()
+    {
+        return $this->belongsTo(User::class, 'approved_by');
+    }
 
-  /**
-   * Format the remaining amount as currency.
-   */
-  public function getFormattedRemainingAmount(): string
-  {
-    return number_format($this->remaining_amount, 2);
-  }
+    public function lineItems()
+    {
+        return $this->hasMany(CoreFinanceBudgetLineItemModal::class, 'budget_id');
+    }
 
-  /**
-   * Scope a query to only include budgets for a specific fiscal year.
-   */
-  public function scopeForFiscalYear($query, $year)
-  {
-    return $query->where('fiscal_year', $year);
-  }
+    public function scenarios()
+    {
+        return $this->hasMany(CoreFinanceBudgetScenarioModal::class, 'budget_id');
+    }
 
-  /**
-   * Scope a query to only include active budgets.
-   */
-  public function scopeActive($query)
-  {
-    return $query->where('status', 'active');
-  }
+    // Scopes
+    public function scopeActive($query)
+    {
+        return $query->where('status', 'active');
+    }
 
-  /**
-   * Scope a query to only include department budgets.
-   */
-  public function scopeDepartmentBudgets($query)
-  {
-    return $query->whereNotNull('department_id');
-  }
+    public function scopeDraft($query)
+    {
+        return $query->where('status', 'draft');
+    }
 
-  /**
-   * Scope a query to only include project budgets.
-   */
-  public function scopeProjectBudgets($query)
-  {
-    return $query->whereNotNull('project_id');
-  }
+    public function scopeClosed($query)
+    {
+        return $query->where('status', 'closed');
+    }
+
+    // Accessors
+    public function getUtilizationPercentageAttribute()
+    {
+        if ($this->total_amount == 0) {
+            return 0;
+        }
+        return round(($this->allocated_amount / $this->total_amount) * 100, 2);
+    }
+
+    public function getRemainingPercentageAttribute()
+    {
+        if ($this->total_amount == 0) {
+            return 0;
+        }
+        return round(($this->remaining_amount / $this->total_amount) * 100, 2);
+    }
+
+    public function getStatusLabelAttribute()
+    {
+        return ucfirst($this->status);
+    }
+
+    public function getIsOverBudgetAttribute()
+    {
+        return $this->remaining_amount < 0;
+    }
+
+    public function getIsNearlyDepletedAttribute()
+    {
+        return $this->remaining_amount > 0 && $this->utilization_percentage >= 90;
+    }
 }

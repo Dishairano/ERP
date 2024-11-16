@@ -11,14 +11,9 @@ class HrmSeeder extends Seeder
 {
   public function run()
   {
-    // Create admin user
-    $adminId = DB::table('users')->insertGetId([
-      'name' => 'Admin User',
-      'email' => 'admin@example.com',
-      'password' => Hash::make('password'),
-      'created_at' => now(),
-      'updated_at' => now(),
-    ]);
+    // Get existing admin user
+    $adminUser = DB::table('users')->where('email', 'admin@example.com')->first();
+    $adminId = $adminUser->id;
 
     // Create interviewer user
     $interviewerId = DB::table('users')->insertGetId([
@@ -116,6 +111,27 @@ class HrmSeeder extends Seeder
         'status' => 'scheduled',
         'created_at' => now(),
         'updated_at' => now(),
+      ]);
+    }
+
+    // Create employees for each department
+    $departments = DB::table('hrm_departments')->get();
+    foreach ($departments as $index => $department) {
+      // Create a unique employee for each department
+      DB::table('hrm_employees')->insert([
+        'user_id' => $index === 0 ? $adminId : $interviewerId,
+        'employee_id' => 'EMP' . str_pad($index + 1, 3, '0', STR_PAD_LEFT),
+        'first_name' => $department->name,
+        'last_name' => 'Manager',
+        'email' => strtolower(str_replace(' ', '.', $department->name)) . '.manager@example.com',
+        'phone' => '+1234567' . str_pad($index + 1, 3, '0', STR_PAD_LEFT),
+        'hire_date' => now(),
+        'employment_status' => 'full_time',
+        'job_title' => $department->name . ' Manager',
+        'salary' => 75000 + ($index * 5000),
+        'is_active' => true,
+        'created_at' => now(),
+        'updated_at' => now()
       ]);
     }
   }

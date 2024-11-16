@@ -7,44 +7,34 @@ use Illuminate\Database\Seeder;
 
 class RoleSeeder extends Seeder
 {
-  public function run(): void
-  {
-    // Create admin role if it doesn't exist
-    Role::firstOrCreate(
-      ['name' => 'admin'],
-      [
-        'description' => 'Administrator with full access',
-        'permissions' => ['*'],
-      ]
-    );
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
+    {
+        $roles = [
+            [
+                'name' => 'Administrator',
+                'slug' => 'admin',
+                'description' => 'System administrator with full access'
+            ],
+            [
+                'name' => 'Manager',
+                'slug' => 'manager',
+                'description' => 'Department manager with approval rights'
+            ],
+            [
+                'name' => 'Employee',
+                'slug' => 'employee',
+                'description' => 'Regular employee with basic access'
+            ]
+        ];
 
-    // Create manager role if it doesn't exist
-    Role::firstOrCreate(
-      ['name' => 'manager'],
-      [
-        'description' => 'Manager with elevated access',
-        'permissions' => [
-          'view',
-          'create',
-          'edit',
-          'delete',
-          'manage_users',
-          'manage_settings',
-        ],
-      ]
-    );
-
-    // Create user role if it doesn't exist
-    Role::firstOrCreate(
-      ['name' => 'user'],
-      [
-        'description' => 'Standard user',
-        'permissions' => [
-          'view',
-          'create',
-          'edit',
-        ],
-      ]
-    );
-  }
+        foreach ($roles as $role) {
+            Role::updateOrCreate(
+                ['slug' => $role['slug']],
+                $role
+            );
+        }
+    }
 }
